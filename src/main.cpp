@@ -1,8 +1,12 @@
 #include <iostream>
+#include "MainWindow_ui.h"
 
 int main()
 {
-	std::cout << "Hello World!" << std::endl;
+	auto mainWindow = MainWindow::create();
+	mainWindow->set_myLabel("Hello from C++");
+	
+	mainWindow->run();
 
 	return 0;
 }

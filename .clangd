@@ -1,2 +1,4 @@
 CompileFlags:
-  CompilationDatabase: .camko/build/Ninja
+  Add:
+    - -Ibuild
+    - -Ibuild/_deps/slint-build
