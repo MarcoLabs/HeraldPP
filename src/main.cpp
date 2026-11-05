@@ -1,4 +1,3 @@
-#include <iostream>
 #include "MainWindow_ui.h"
 
 int main()
