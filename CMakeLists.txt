@@ -30,7 +30,7 @@ file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS
 
 # Collect Slint UI files (including nested directories)
 file(GLOB_RECURSE UI_FILES CONFIGURE_DEPENDS
-	"${CMAKE_CURRENT_SOURCE_DIR}/ui/*.slint"
+	"${CMAKE_CURRENT_SOURCE_DIR}/ui/*_ui.slint"
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
