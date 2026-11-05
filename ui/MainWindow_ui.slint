@@ -1,0 +1,15 @@
+export component MainWindow inherits Window
+{
+	width:  400px;
+	height: 400px;
+
+	in property myLabel <=> label.text;
+
+	label := Text
+	{
+		y: parent.width / 2;
+		x: parent.x + 200px;
+		text: "Hello world";
+		color: blue;
+	}
+}
