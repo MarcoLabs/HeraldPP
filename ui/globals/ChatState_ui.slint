@@ -6,5 +6,5 @@ export struct Message
 
 export global ChatState
 {
-	in property <[Message]> messages;
+	in-out property <[Message]> messages: [];
 }
