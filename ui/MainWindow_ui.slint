@@ -1,21 +1,19 @@
+import { ScrollableChat } from "pages/ScrollableChat_ui.slint";
+import { ChatState } from "globals/ChatState_ui.slint";
+
 export component MainWindow inherits Window
 {
 	title: "Herald";
 	width:  400px;
 	height: 400px;
 
-	in-out property <int> counter: 0;
-
-	Text
+	ScrollableChat
 	{
-		text: "Counter: " + counter;
-	}
+		width: root.width;
+		height: root.height;
 
-	TouchArea
-	{
-		clicked =>
-		{
-			root.counter += 1;
-		}
+		messages: ChatState.messages;
 	}
 }
+
+export { ChatState }

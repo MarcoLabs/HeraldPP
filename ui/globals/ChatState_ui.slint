@@ -1,0 +1,10 @@
+export struct Message
+{
+	author: string,
+	content: string
+}
+
+export global ChatState
+{
+	in property <[Message]> messages;
+}

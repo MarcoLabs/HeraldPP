@@ -1,0 +1,16 @@
+import { Message } from "../globals/ChatState_ui.slint";
+
+export component ScrollableChat
+{
+	in property <[Message]> messages;
+
+	for message[i] in messages : Text
+	{
+		y: i * 25px;
+		
+		width: parent.width;
+		height: 20px;
+
+		text: message.author + ": " + message.content;
+	}
+}
