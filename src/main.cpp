@@ -1,9 +1,11 @@
 #include "MainWindow_ui.h"
+#include "ui/MainWindowController.h"
 
 int main()
 {
 	auto mainWindow = MainWindow::create();
-	mainWindow->set_myLabel("Hello from C++");
+
+	MainWindowController mainWindowController(mainWindow);
 	
 	mainWindow->run();
 

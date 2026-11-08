@@ -1,15 +1,21 @@
 export component MainWindow inherits Window
 {
+	title: "Herald";
 	width:  400px;
 	height: 400px;
 
-	in property myLabel <=> label.text;
+	in-out property <int> counter: 0;
 
-	label := Text
+	Text
 	{
-		y: parent.width / 2;
-		x: parent.x + 200px;
-		text: "Hello world";
-		color: blue;
+		text: "Counter: " + counter;
+	}
+
+	TouchArea
+	{
+		clicked =>
+		{
+			root.counter += 1;
+		}
 	}
 }
