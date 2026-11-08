@@ -35,11 +35,11 @@ project/
 │           └── MemoryGameController.cpp
 │
 └── ui/                              # Slint UI definitions
-    ├── MainWindow.slint
+    ├── MainWindow_ui.slint
     ├── components/
-    │   └── MemoryTile.slint
+    │   └── MemoryTile_ui.slint
     └── pages/
-        └── MemoryGame.slint
+        └── MemoryGame_ui.slint
 ```
 
 The names above are examples; the actual files and subdirectories depend on the project.
@@ -58,7 +58,7 @@ The names above are examples; the actual files and subdirectories depend on the 
 
 - Tabs for indentation, no unnecessary comments.
 - Opening braces go on their own line, in both C++ and Slint.
-- File names match the class or component they implement: `MemoryGame.h`, `MemoryGame.cpp`, `MemoryGame.slint`. Files that are not a class, such as `main.cpp`, are the exception.
+- File names match the class or component they implement: `MemoryGame.h`, `MemoryGame.cpp`, `MemoryGame_ui.slint`. Slint files always end in `_ui` (`*_ui.slint`), which keeps their generated headers (`MemoryGame_ui.h`) from clashing with hand-written ones. Files that are not a class, such as `main.cpp`, are the exception.
 - Functions and methods use `PascalCase`, except getters, which are `getX`.
 - Variables and fields use `camelCase`; member variables keep the `m_` prefix.
 - Use `size_t`, not `std::size_t`.
@@ -82,9 +82,40 @@ A controller does not need to mirror the Slint component hierarchy. Organize con
 
 ### Which components are visible to C++?
 
-Slint only generates C++ classes for components exported from the entry file (`ui/MainWindow.slint`). Components nested inside the window, such as the memory game page, are not reachable from C++ directly. Instead, the window exposes the properties and callbacks that C++ needs and forwards them to the nested components. Structs used by those properties (such as `TileData`) must also be re-exported from `MainWindow.slint`.
+Slint only generates C++ classes for components exported from the entry file (`ui/MainWindow_ui.slint`). Components nested inside the window, such as the memory game page, are not reachable from C++ directly. Instead, the window exposes the properties and callbacks that C++ needs and forwards them to the nested components. Structs used by those properties (such as `TileData`) must also be re-exported from `MainWindow_ui.slint`.
 
-The header generated from `ui/MainWindow.slint` is included as `"MainWindow.h"`. Because only the entry file generates a header, the Slint `MemoryGame` page and the C++ `app::MemoryGame` class do not clash.
+The header generated from `ui/MainWindow_ui.slint` is included as `"MainWindow_ui.h"`. Component names inside the files stay unsuffixed (`MainWindow`, `MemoryGame`, `MemoryTile`).
+
+## Build (CMake)
+
+List only the entry file, `ui/MainWindow_ui.slint`, in `slint_target_sources`. Files it imports (`MemoryGame_ui.slint`, `MemoryTile_ui.slint`) are found through the imports and tracked as dependencies automatically.
+
+Listing every `.slint` file makes each one a separate entry point, and each generates its own copy of every component it imports. The linker then reports `multiple definition of MemoryTile_root_1::init(...)` and similar errors.
+
+```cmake
+cmake_minimum_required(VERSION 3.21)
+project(SlintLearning LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+include(FetchContent)
+FetchContent_Declare(
+	Slint
+	GIT_REPOSITORY https://github.com/slint-ui/slint.git
+	GIT_TAG release/1
+	SOURCE_SUBDIR api/cpp
+)
+FetchContent_MakeAvailable(Slint)
+
+file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS src/*.cpp)
+
+add_executable(SlintLearning ${SOURCES})
+target_include_directories(SlintLearning PRIVATE include)
+target_link_libraries(SlintLearning PRIVATE Slint::Slint)
+
+slint_target_sources(SlintLearning ui/MainWindow_ui.slint)
+```
 
 ## Startup and initialization
 
@@ -269,7 +300,7 @@ A controller owns the C++ side of a UI component: it keeps a handle to the Slint
 ```cpp
 #pragma once
 
-#include "MainWindow.h"
+#include "MainWindow_ui.h"
 #include "app/MemoryGame.h"
 
 #include <memory>
@@ -364,7 +395,7 @@ void MemoryGameController::Refresh()
 
 The model starts empty; the `Refresh()` call at the end of the constructor is what fills it from the game state, so the board is populated before the window is shown. Since the window holds the same `shared_ptr`, every later change is picked up by Slint automatically.
 
-`TileData` is generated from the Slint struct in `MemoryTile.slint`, so its fields are `symbol`, `face_up`, and `matched` (Slint's `face-up` becomes `face_up` in C++).
+`TileData` is generated from the Slint struct in `MemoryTile_ui.slint`, so its fields are `symbol`, `face_up`, and `matched` (Slint's `face-up` becomes `face_up` in C++).
 
 The timer callback captures `this`, so the controller must outlive any pending timer. A local controller in `main()` satisfies this.
 
@@ -377,7 +408,7 @@ When there is only one page, the main window controller can just own the page co
 ```cpp
 #pragma once
 
-#include "MainWindow.h"
+#include "MainWindow_ui.h"
 #include "app/MemoryGame.h"
 #include "ui/components/MemoryGameController.h"
 
@@ -408,7 +439,7 @@ Construct controllers after creating the Slint window and before starting the ev
 **`src/main.cpp`**
 
 ```cpp
-#include "MainWindow.h"
+#include "MainWindow_ui.h"
 #include "app/MemoryGame.h"
 #include "ui/MainWindowController.h"
 
@@ -431,7 +462,7 @@ If a controller is a member of another controller, declare its dependencies befo
 
 ### Slint files
 
-**`ui/components/MemoryTile.slint`**
+**`ui/components/MemoryTile_ui.slint`**
 
 ```slint
 export struct TileData
@@ -468,11 +499,11 @@ export component MemoryTile inherits Rectangle
 }
 ```
 
-**`ui/pages/MemoryGame.slint`**
+**`ui/pages/MemoryGame_ui.slint`**
 
 ```slint
 import { Button } from "std-widgets.slint";
-import { MemoryTile, TileData } from "../components/MemoryTile.slint";
+import { MemoryTile, TileData } from "../components/MemoryTile_ui.slint";
 
 export component MemoryGame inherits Rectangle
 {
@@ -528,11 +559,11 @@ export component MemoryGame inherits Rectangle
 }
 ```
 
-**`ui/MainWindow.slint`**
+**`ui/MainWindow_ui.slint`**
 
 ```slint
-import { TileData } from "components/MemoryTile.slint";
-import { MemoryGame } from "pages/MemoryGame.slint";
+import { TileData } from "components/MemoryTile_ui.slint";
+import { MemoryGame } from "pages/MemoryGame_ui.slint";
 
 export { TileData }
 
