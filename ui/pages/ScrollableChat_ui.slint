@@ -1,8 +1,12 @@
 import { Message } from "../globals/ChatState_ui.slint";
+import { Button } from "std-widgets.slint";
+import { ChatActions } from "../globals/ChatActions_ui.slint";
 
 export component ScrollableChat
 {
 	in property <[Message]> messages;
+
+	private property <int> count;
 
 	for message[i] in messages : Text
 	{
@@ -12,5 +16,18 @@ export component ScrollableChat
 		height: 20px;
 
 		text: message.author + ": " + message.content;
+	}
+
+	Button
+	{
+		width: 30px;
+		height: 30px;
+		text: "Send";
+		
+		clicked =>
+		{
+			ChatActions.send(count);
+			count += 1;
+		}
 	}
 }
