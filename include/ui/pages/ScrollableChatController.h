@@ -12,7 +12,7 @@ public:
 	ScrollableChatController(slint::ComponentHandle<MainWindow> window);
 
 private:
-	void Send(const slint::SharedString& messageContent);
+	void Send(const slint::SharedString& author, const slint::SharedString& messageContent);
 	
 	slint::ComponentHandle<MainWindow> m_window;
 	std::shared_ptr<slint::VectorModel<Message>> m_messages;
