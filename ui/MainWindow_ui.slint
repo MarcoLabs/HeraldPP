@@ -1,5 +1,6 @@
 import { ScrollableChat } from "pages/ScrollableChat_ui.slint";
 import { ChatState } from "globals/ChatState.slint";
+import { ChatActions } from "globals/ChatActions.slint";
 
 export component MainWindow inherits Window
 {
@@ -11,8 +12,11 @@ export component MainWindow inherits Window
 	{
 		width: root.width;
 		height: root.height;
-
-		messages: ChatState.messages;
+		
+		send-message(author, message) =>
+		{
+			ChatActions.send(author, message);
+		}
 	}
 }
 
