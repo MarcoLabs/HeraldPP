@@ -1,19 +1,18 @@
 #pragma once
 
 #include "MainWindow_ui.h"
-#include "private/slint_item_tree.h"
-#include "private/slint_models.h"
 #include "private/slint_string.h"
-#include <memory>
 
 class ScrollableChatController
 {
 public:
-	ScrollableChatController(slint::ComponentHandle<MainWindow> window);
+		ScrollableChatController(const ChatState& chatState, const ChatActions& chatActions);
 
 private:
 	void Send(const slint::SharedString& author, const slint::SharedString& messageContent);
 	
-	slint::ComponentHandle<MainWindow> m_window;
+	const ChatState& m_chatState;
+	const ChatActions& m_chatActions;
+
 	std::shared_ptr<slint::VectorModel<Message>> m_messages;
 };
