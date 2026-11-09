@@ -1,21 +1,40 @@
 import { Message } from "../globals/ChatState.slint";
-import { Button } from "std-widgets.slint";
+import { Button, ScrollView } from "std-widgets.slint";
 import { ChatActions } from "../globals/ChatActions.slint";
 
 export component ScrollableChat
 {
 	in property <[Message]> messages;
 
-	private property <int> count;
+	private property <bool> stick-to-bottom: true;
+	
+	property <int> count;
 
-	for message[i] in messages : Text
+	ScrollView
 	{
-		y: i * 25px;
-		
-		width: parent.width;
-		height: 20px;
+		height: 200px;
+		content-height: messages.length * 25px;
 
-		text: message.author + ": " + message.content;
+		scrolled =>
+		{
+			root.stick-to-bottom = self.content-y <= self.visible-height - self.content-height + 10px;
+		}
+
+		changed content-height =>
+		{
+			if (root.stick-to-bottom)
+			{
+				self.content-y = min(0px, self.visible-height - self.content-height);
+			}
+		}
+
+		for message[i] in messages : Text
+		{
+			y: i * 25px;
+			width: parent.width;
+			height: 20px;
+			text: message.content;
+		}
 	}
 
 	Button
@@ -23,7 +42,7 @@ export component ScrollableChat
 		width: 30px;
 		height: 30px;
 		text: "Send";
-		
+
 		clicked =>
 		{
 			ChatActions.send(count);
