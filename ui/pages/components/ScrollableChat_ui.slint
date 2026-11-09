@@ -11,21 +11,21 @@ export component ScrollableChat
 
 	private property <bool> stick-to-bottom: true;
 	private property <string> user-input-message;
-	
+
 	VerticalLayout
 	{
 		padding: 15px;
-		
+
 		ScrollView
 		{
 			height: 200px;
 			content-height: messages.length * 25px;
-	
+
 			scrolled =>
 			{
 				root.stick-to-bottom = self.content-y <= self.visible-height - self.content-height + 10px;
 			}
-	
+
 			changed content-height =>
 			{
 				if (root.stick-to-bottom)
@@ -33,7 +33,7 @@ export component ScrollableChat
 					self.content-y = min(0px, self.visible-height - self.content-height);
 				}
 			}
-	
+
 			for message[i] in messages : Text
 			{
 				y: i * 25px;
@@ -47,7 +47,7 @@ export component ScrollableChat
 		{
 			height: 35px;
 			padding: 10px;
-			
+
 			LineEdit
 			{
 				placeholder-text: "Enter message here";
@@ -59,24 +59,24 @@ export component ScrollableChat
 					{
 						return;
 					}
-					
+
 					root.send-message(UserState.username, user-input-message);
 
 					user-input-message = "";
 				}
 			}
-			
+
 			Button
 			{
-				text: "Send";
-		
+				text: "➤";
+
 				clicked =>
 				{
 					if (user-input-message.is-empty)
 					{
 						return;
 					}
-					
+
 					root.send-message(UserState.username, user-input-message);
 
 					user-input-message = "";
@@ -84,5 +84,5 @@ export component ScrollableChat
 			}
 		}
 	}
-	
+
 }
