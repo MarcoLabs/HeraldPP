@@ -6,7 +6,7 @@
 class ScrollableChatController
 {
 public:
-		ScrollableChatController(const ChatState& chatState, const ChatActions& chatActions);
+	ScrollableChatController(const ChatState& chatState, const ChatActions& chatActions, std::shared_ptr<slint::VectorModel<Message>> messages);
 
 private:
 	void Send(const slint::SharedString& author, const slint::SharedString& messageContent);

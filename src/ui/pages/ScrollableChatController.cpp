@@ -4,7 +4,10 @@
 #include "private/slint_string.h"
 #include <memory>
 
-ScrollableChatController::ScrollableChatController(const ChatState& chatState, const ChatActions& chatActions): m_chatState(chatState), m_chatActions(chatActions), m_messages(std::make_shared<slint::VectorModel<Message>>())
+ScrollableChatController::ScrollableChatController(const ChatState& chatState, const ChatActions& chatActions, std::shared_ptr<slint::VectorModel<Message>> messages):
+	m_chatState(chatState),
+	m_chatActions(chatActions),
+	m_messages(std::move(messages))
 {
 	this->m_chatActions.on_send([this](slint::SharedString author, slint::SharedString messageContent)
 	{
