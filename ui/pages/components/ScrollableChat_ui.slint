@@ -1,0 +1,88 @@
+import { Message, ChatState } from "../../globals/ChatState.slint";
+import { Button, ScrollView, LineEdit } from "std-widgets.slint";
+import { ChatActions } from "../../globals/ChatActions.slint";
+import { UserState } from "../../globals/UserState.slint";
+
+export component ScrollableChat
+{
+	callback send-message(string, string);
+
+	in-out property <[Message]> messages <=> ChatState.messages;
+
+	private property <bool> stick-to-bottom: true;
+	private property <string> user-input-message;
+
+	VerticalLayout
+	{
+		padding: 15px;
+
+		ScrollView
+		{
+			height: 200px;
+			content-height: messages.length * 25px;
+
+			scrolled =>
+			{
+				root.stick-to-bottom = self.content-y <= self.visible-height - self.content-height + 10px;
+			}
+
+			changed content-height =>
+			{
+				if (root.stick-to-bottom)
+				{
+					self.content-y = min(0px, self.visible-height - self.content-height);
+				}
+			}
+
+			for message[i] in messages : Text
+			{
+				y: i * 25px;
+				width: parent.width;
+				height: 20px;
+				text: message.author + ":" + message.content;
+			}
+		}
+
+		HorizontalLayout
+		{
+			height: 35px;
+			padding: 10px;
+
+			LineEdit
+			{
+				placeholder-text: "Enter message here";
+				text <=> user-input-message;
+
+				accepted =>
+				{
+					if (user-input-message.is-empty)
+					{
+						return;
+					}
+
+					root.send-message(UserState.username, user-input-message);
+
+					user-input-message = "";
+				}
+			}
+
+			Button
+			{
+				text: "➤";
+
+				clicked =>
+				{
+					if (user-input-message.is-empty)
+					{
+						return;
+					}
+
+					root.send-message(UserState.username, user-input-message);
+
+					user-input-message = "";
+				}
+			}
+		}
+	}
+
+}
