@@ -1,0 +1,89 @@
+import { Pages } from "../globals/Pages.slint";
+
+export component MainSidebar {
+    in-out property <Pages> current-page: Pages.Home;
+
+    VerticalLayout {
+        Rectangle {
+            width: 100%;
+            height: 90%;
+            border-color: Colors.crimson;
+            border-width: 1px;
+
+            VerticalLayout {
+                Rectangle {
+                    height: 45px;
+                    background: root.current-page == Pages.PrivateChat ? #383a45 : #202127;
+                        Text {
+                            text: "PrivateChat";
+                            color: white;
+                            x: 15px;
+                            y: 12px;
+                        }
+                        TouchArea {
+                            clicked => {
+                            root.current-page = Pages.PrivateChat;
+                        }
+                    }
+                }
+                Rectangle {
+                    height: 45px;
+                    background: root.current-page == Pages.ServerChat ? #383a45 : #202127;
+                        Text {
+                            text: "ServerChat";
+                            color: white;
+                            x: 15px;
+                            y: 12px;
+                        }
+                        TouchArea {
+                            clicked => {
+                            root.current-page = Pages.ServerChat;
+                        }
+                    }
+                }
+                Rectangle {
+                    height: 45px;
+                    background: root.current-page == Pages.Settings ? #383a45 : #202127;
+                        Text {
+                            text: "Settings";
+                            color: white;
+                            x: 15px;
+                            y: 12px;
+                        }
+                        TouchArea {
+                            clicked => {
+                            root.current-page = Pages.Settings;
+                        }
+                    }
+                }
+                Rectangle {
+                    height: 45px;
+                    background: root.current-page == Pages.Home ? #383a45 : #202127;
+                        Text {
+                            text: "Home";
+                            color: white;
+                            x: 15px;
+                            y: 12px;
+                        }
+                        TouchArea {
+                            clicked => {
+                            root.current-page = Pages.Home;
+                        }
+                    }
+                }
+
+            }
+        }
+        Rectangle {
+            width: 100%;
+            height: 10%;
+            border-color: Colors.crimson;
+            border-width: 1px;
+
+            Text {
+                text: "profile box";
+            }
+
+        }
+    }
+}
