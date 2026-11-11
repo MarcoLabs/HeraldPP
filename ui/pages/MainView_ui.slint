@@ -8,7 +8,7 @@ import { Home } from "../pages/MainViews/Home_ui.slint";
 
 export component MainView
 {
-	in-out property <Pages> current-page: Pages.Home;
+	in property <Pages> current-page;
 
 	if current-page == Pages.Home: Home
 	{
