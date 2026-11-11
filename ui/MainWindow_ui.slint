@@ -1,10 +1,10 @@
-import { Settings } from "pages/MainViews/Settings_ui.slint";
-import { PrivateChat } from "pages/MainViews/PrivateChat_ui.slint";
-import { ServerChat } from "pages/MainViews/ServerChat_ui.slint";
-import { MainSidebar } from "pages/MainSidebar_ui.slint";
-import { Home } from "pages/MainViews/Home_ui.slint";
+import { Settings } from "pages/Settings_ui.slint";
+import { PrivateChat } from "pages/PrivateChat_ui.slint";
+import { ServerChat } from "pages/ServerChat_ui.slint";
+import { MainSidebar } from "MainSidebar_ui.slint";
+import { Home } from "pages/Home_ui.slint";
 import { Pages } from "globals/Pages.slint";
-import { MainView } from "pages/MainView_ui.slint";
+import { MainView } from "MainView_ui.slint";
 
 export component MainWindow inherits Window
 {
@@ -22,7 +22,6 @@ export component MainWindow inherits Window
 		{
 			height: root.height;
 			width: 10%;
-
 
 			current-page <=> root.current-page;
 		}
