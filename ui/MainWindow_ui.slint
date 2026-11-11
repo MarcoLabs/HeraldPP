@@ -1,23 +1,40 @@
-import { ScrollableChat } from "pages/components/ScrollableChat_ui.slint";
-import { ChatState } from "globals/ChatState.slint";
-import { ChatActions } from "globals/ChatActions.slint";
+import { Settings } from "pages/Settings_ui.slint";
+import { PrivateChat } from "pages/PrivateChat_ui.slint";
+import { ServerChat } from "pages/ServerChat_ui.slint";
+import { MainSidebar } from "MainSidebar_ui.slint";
+import { Home } from "pages/Home_ui.slint";
+import { Pages } from "globals/Pages.slint";
+import { MainView } from "MainView_ui.slint";
 
 export component MainWindow inherits Window
 {
 	title: "Herald";
-	width:  400px;
-	height: 400px;
+	width:  1000px;
+	height: 700px;
 
-	ScrollableChat
+	in-out property <Pages> current-page: Pages.Home;
+
+	HorizontalLayout
 	{
-		width: root.width;
-		height: root.height;
-		
-		send-message(author, message) =>
+		spacing: 0px;
+
+		MainSidebar
 		{
-			ChatActions.send(author, message);
+			height: root.height;
+			width: 10%;
+
+			current-page <=> root.current-page;
+		}
+
+		MainView
+		{
+			height: root.height;
+			width: 90%;
+
+			current-page: root.current-page;
 		}
 	}
+
 }
 
 export * from "globals/Globals.slint";
