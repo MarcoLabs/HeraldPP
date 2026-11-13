@@ -1,5 +1,19 @@
+import { ChannelsPanel } from "ServerChat/ChannelsPanel_ui.slint";
+import { ServerState } from "../globals/Globals.slint";
 export component ServerChat
 {
+	ChannelsPanel
+	{
+		HorizontalLayout
+		{
+			ChannelsPanel
+			{
+				server-name: ServerState.server-name;
+				channels: ServerState.channels;
+			}
+		}
+	}
+	
 	Text
 	{
 		text: "ServerChat";
