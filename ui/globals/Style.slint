@@ -1,0 +1,42 @@
+struct ColorTheme
+{
+	bg-primary: color,
+	bg-secondary:color,
+	text-primary:color,
+
+}
+struct Colors
+{
+	dark-mode: ColorTheme,
+	light-mode: ColorTheme,
+}
+
+export global AppTheme
+{
+	in-out property<bool> dark_mode: true;
+
+	private property<Colors> palettes:
+	{
+		dark-mode:
+		{
+			bg-primary: darkgray,
+			bg-secondary: gray,
+			text-primary: crimson,
+		},
+		light-mode:
+		{
+			bg-primary: lightgray,
+			bg-secondary: whitesmoke,
+			text-primary: black,
+		},
+	};
+
+	out property <ColorTheme> current-theme: dark-mode ? palettes.dark-mode : palettes.light-mode;
+
+	callback toggle-theme();
+
+	toggle-theme =>
+	{
+		dark-mode = !dark-mode;
+	}
+}
