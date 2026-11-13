@@ -1,0 +1,50 @@
+import { Channel } from "../../../globals/shared/ServerState.slint";
+import { AppTheme } from "../../../globals/Style.slint";
+
+component ChannelItem inherits Rectangle
+{
+	in property <Channel> channel;
+
+	background: channel.selected ? AppTheme.current-theme.accent : AppTheme.current-theme.panel;
+	border-radius: 5px;
+	height: 25px;
+
+	VerticalLayout
+	{
+		alignment: center;
+		padding: 5px;
+		
+		Text
+		{
+			text: "# " + channel.name;
+			color: channel.selected ? AppTheme.current-theme.text-primary : AppTheme.current-theme.text-muted;
+		}
+	}
+}
+
+export component Channels inherits Rectangle
+{
+	in property <[Channel]> channels;
+
+	VerticalLayout
+	{
+		padding: 10px;
+		alignment: start;
+		
+		Text
+		{
+			text: "Channels";
+			color: AppTheme.current-theme.text-muted;
+		}
+
+		VerticalLayout
+		{
+			alignment: center;
+		
+			for channel in channels : ChannelItem
+			{
+				channel: channel;
+			}
+		}
+	}
+}
