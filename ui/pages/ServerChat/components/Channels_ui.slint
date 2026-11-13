@@ -11,6 +11,8 @@ component ChannelItem inherits Rectangle
 	border-radius: 5px;
 	height: 25px;
 
+	animate background { duration: 100ms; easing: ease-in; }
+
 	VerticalLayout
 	{
 		alignment: center;
@@ -20,6 +22,8 @@ component ChannelItem inherits Rectangle
 		{
 			text: "# " + channel.name;
 			color: channel.selected ? AppTheme.current-theme.text-primary : AppTheme.current-theme.text-muted;
+			
+			animate color { duration: 100ms; easing: ease-in; }
 		}
 	}
 
