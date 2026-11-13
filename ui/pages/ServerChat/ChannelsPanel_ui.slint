@@ -1,14 +1,16 @@
 import { AppTheme } from "../../globals/Style.slint";
 import { PanelItem } from "components/PanelItem_ui.slint";
 import { Channel } from "../../globals/shared/ServerState.slint";
+import { Channels } from "components/Channels_ui.slint";
 
 export component ChannelsPanel inherits Rectangle
 {
-	in property <string> server-name: "Server name";
+	in property <string> server-name;
 	in property <[Channel]> channels;
 
 	border-width: 1px;
 	border-color: AppTheme.current-theme.border;
+	background: AppTheme.current-theme.panel;
 
 	VerticalLayout
 	{
@@ -28,19 +30,9 @@ export component ChannelsPanel inherits Rectangle
 		{
 			height: 90%;
 
-			VerticalLayout
+			Channels
 			{
-				Text
-				{
-					text: "Channels";
-					color: AppTheme.current-theme.text-muted;
-				}
-
-				for channel in channels : Text
-				{
-					text: "# " + channel.name;
-					color: channel.selected ? AppTheme.current-theme.text-primary : AppTheme.current-theme.text-muted;
-				}
+				channels: channels;
 			}
 		}
 	}
