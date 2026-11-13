@@ -2,7 +2,14 @@ struct ColorTheme
 {
 	bg-primary: color,
 	bg-secondary: color,
+	panel: color,
+	surface: color,
+	border: color,
 	text-primary: color,
+	text-muted: color,
+	accent: color,
+	text-on-accent: color,
+	accent-tint: color,
 
 }
 
@@ -18,19 +25,33 @@ export global AppTheme
 
 	out property <ColorTheme> current-theme: dark-mode ? palettes.dark-mode : palettes.light-mode;
 
-	private property<Colors> palettes:
+	private property <Colors> palettes:
 	{
 		dark-mode:
 		{
-			bg-primary: darkgray,
-			bg-secondary: gray,
-			text-primary: crimson,
+			bg-primary: #0F1117,
+			bg-secondary: #0B0D12,
+			panel: #161922,
+			surface: #1D212C,
+			border: #2A2F3D,
+			text-primary: #E6E8EF,
+			text-muted: #9AA1B2,
+			accent: #7C8CFF,
+			text-on-accent: #0B0D12,
+			accent-tint: #242A4A,
 		},
 		light-mode:
 		{
-			bg-primary: lightgray,
-			bg-secondary: whitesmoke,
-			text-primary: black,
+			bg-primary: #F6F7FB,
+			bg-secondary: #E9EBF3,
+			panel: #FFFFFF,
+			surface: #EEF0F7,
+			border: #D9DCE8,
+			text-primary: #161823,
+			text-muted: #5A6073,
+			accent: #4A5BE0,
+			text-on-accent: #FFFFFF,
+			accent-tint: #E4E8FF,
 		},
 	};
 
