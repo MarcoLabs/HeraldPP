@@ -3,6 +3,8 @@ import { AppTheme } from "../../../globals/Style.slint";
 
 component ChannelItem inherits Rectangle
 {
+	callback clicked;
+
 	in property <Channel> channel;
 
 	background: channel.selected ? AppTheme.current-theme.accent : AppTheme.current-theme.panel;
@@ -20,10 +22,20 @@ component ChannelItem inherits Rectangle
 			color: channel.selected ? AppTheme.current-theme.text-primary : AppTheme.current-theme.text-muted;
 		}
 	}
+
+	TouchArea
+	{
+		clicked =>
+		{
+			root.clicked();
+		}
+	}
 }
 
 export component Channels inherits Rectangle
 {
+	callback channel-changed(int);
+
 	in property <[Channel]> channels;
 
 	VerticalLayout
@@ -41,9 +53,14 @@ export component Channels inherits Rectangle
 		{
 			alignment: center;
 		
-			for channel in channels : ChannelItem
+			for channel[i] in channels : ChannelItem
 			{
 				channel: channel;
+
+				clicked =>
+				{
+					root.channel-changed(i);
+				}
 			}
 		}
 	}
