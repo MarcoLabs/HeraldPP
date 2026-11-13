@@ -2,20 +2,19 @@ import { ChannelsPanel } from "ServerChat/ChannelsPanel_ui.slint";
 import { ServerState } from "../globals/Globals.slint";
 export component ServerChat
 {
-	ChannelsPanel
+	HorizontalLayout
 	{
-		HorizontalLayout
+		ChannelsPanel
 		{
-			ChannelsPanel
-			{
-				server-name: ServerState.server-name;
-				channels: ServerState.channels;
-			}
+			width: 20%;
+		
+			server-name: ServerState.server-name;
+			channels: ServerState.channels;
 		}
-	}
-	
-	Text
-	{
-		text: "ServerChat";
+
+		Text
+		{
+			text: "ServerChat";
+		}
 	}
 }
