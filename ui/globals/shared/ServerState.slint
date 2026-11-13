@@ -1,0 +1,11 @@
+export struct Channel
+{
+	name: string,
+	selected: bool,
+}
+
+export global ServerState
+{
+	in-out property <[Channel]> channels;
+	in-out property <string> server-name;
+}
