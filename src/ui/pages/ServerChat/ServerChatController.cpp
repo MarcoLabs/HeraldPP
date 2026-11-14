@@ -7,11 +7,12 @@
 ServerChatController::ServerChatController(const ServerState& serverState, const ServerActions& serverActions):
 	m_serverState(serverState),
 	m_serverActions(serverActions),
-	m_serverName("Server name"),
-	m_currentChannelIndex(0),
+	m_serverName(std::make_shared<slint::SharedString>("Server name")),
+	m_currentChannelIndex(std::make_shared<int>(0)),
 	m_channels(std::make_shared<slint::VectorModel<Channel>>()),
 	m_messages(std::make_shared<slint::VectorModel<Message>>()),
-	m_chatController(m_messages)
+	m_chatController(m_messages),
+	m_serverChannelsController(m_currentChannelIndex, m_channels)
 {
 	this->m_serverActions.on_send_message([this](const slint::SharedString& author, const slint::SharedString& messageContent)
 	{
@@ -36,6 +37,6 @@ void ServerChatController::ChangeServerTo(int serverId)
 
 void ServerChatController::UpdateUiWithScalarValues()
 {
-	this->m_serverState.set_server_name(this->m_serverName);
-	this->m_serverState.set_current_channel_index(this->m_currentChannelIndex);
+	this->m_serverState.set_server_name(*this->m_serverName);
+	this->m_serverState.set_current_channel_index(*this->m_currentChannelIndex);
 }
