@@ -7,10 +7,10 @@
 ServerChatController::ServerChatController(const ServerState& serverState, const ServerActions& serverActions):
 	m_serverState(serverState),
 	m_serverActions(serverActions),
-	m_serverName(std::make_shared<slint::SharedString>("Server name")),
+	m_messages(std::make_shared<slint::VectorModel<Message>>()),
 	m_currentChannelIndex(std::make_shared<int>(0)),
 	m_channels(std::make_shared<slint::VectorModel<Channel>>()),
-	m_messages(std::make_shared<slint::VectorModel<Message>>()),
+	m_serverName(std::make_shared<slint::SharedString>("Server name")),
 	m_chatController(m_messages),
 	m_serverChannelsController(m_currentChannelIndex, m_channels)
 {

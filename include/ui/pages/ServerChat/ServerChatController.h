@@ -27,13 +27,13 @@ private:
 	const ServerState& m_serverState;
 	const ServerActions& m_serverActions;
 
-	std::shared_ptr<int> m_currentServerId;
-	std::shared_ptr<slint::SharedString> m_serverName;
+	std::shared_ptr<slint::VectorModel<Message>> m_messages;
 	
 	std::shared_ptr<int> m_currentChannelIndex;
 	std::shared_ptr<slint::VectorModel<Channel>> m_channels;
 
-	std::shared_ptr<slint::VectorModel<Message>> m_messages;
+	std::shared_ptr<int> m_currentServerId;
+	std::shared_ptr<slint::SharedString> m_serverName;
 
 	ChatController m_chatController;
 	
