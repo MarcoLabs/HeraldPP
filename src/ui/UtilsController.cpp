@@ -3,9 +3,9 @@
 #include "Utils.h"
 #include "private/slint_string.h"
 
-UtilsController::UtilsController(MainWindow& mainWindow)
+UtilsController::UtilsController(const slint::ComponentHandle<MainWindow>&mainWindow)
 {
-	const auto& utils = mainWindow.global<Utils>();
+	const auto& utils = mainWindow->global<Utils>();
 
 	utils.on_first_two([](const slint::SharedString& s)
 	{
