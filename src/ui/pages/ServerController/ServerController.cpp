@@ -38,7 +38,7 @@ ServerController::ServerController(const ServerState& serverState, const ServerA
 
 void ServerController::SendMessage(const slint::SharedString& author, const slint::SharedString& messageContent)
 {
-	this->m_serverChannelsController.AttemptSendMessageToCurrentChat(Message{author, messageContent});
+	this->m_serverChannelsController.AttemptSendMessageToCurrentChannel(Message{author, messageContent});
 }
 
 void ServerController::ChangeServerTo(int serverId)

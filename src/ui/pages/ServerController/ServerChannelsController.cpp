@@ -37,7 +37,7 @@ void ServerChannelsController::ChangeChannelTo(size_t channelIndex)
 	m_serverChatController.SetMessages(std::move(messages));
 }
 
-void ServerChannelsController::AttemptSendMessageToCurrentChat(const Message& message)
+void ServerChannelsController::AttemptSendMessageToCurrentChannel(const Message& message)
 {
 	m_serverChatController.AttemptSendMessage(message);
 }

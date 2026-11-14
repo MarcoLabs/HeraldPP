@@ -14,7 +14,7 @@ public:
 	void EvaluateCurrentChannelIndex();
 	
 	void ChangeChannelTo(size_t channelIndex);
-	void AttemptSendMessageToCurrentChat(const Message& message);
+	void AttemptSendMessageToCurrentChannel(const Message& message);
 
 	void BindCurrentChannel();
 
