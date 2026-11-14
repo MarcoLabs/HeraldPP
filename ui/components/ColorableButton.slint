@@ -1,0 +1,28 @@
+import { AppTheme } from "../globals/Style.slint";
+
+export component ColorableButton
+{
+	in property <string> text;
+	in property <color> text-color: AppTheme.current-theme.text-on-accent;
+	in property <color> background: AppTheme.current-theme.accent;
+	callback clicked;
+
+	Rectangle
+	{
+		background: touch.pressed ? root.background.darker(0.2) : root.background;
+		border-radius: 6px;
+
+		animate background { duration: 50ms; easing: ease-out; }
+
+		Text
+		{
+			text: root.text;
+			color: root.text-color;
+		}
+
+		touch := TouchArea
+		{
+			clicked => { root.clicked(); }
+		}
+	}
+}
