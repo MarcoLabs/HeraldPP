@@ -9,6 +9,8 @@ class ServerChannelsController
 public:
 	ServerChannelsController(std::shared_ptr<int> currentChannelIndex, std::shared_ptr<slint::VectorModel<Channel>> channels);
 
+	void EvaluateCurrentChannelIndex();
+	
 	void ChangeChannelTo(size_t channelIndex);
 
 private:

@@ -3,8 +3,21 @@
 ServerChannelsController::ServerChannelsController(std::shared_ptr<int> currentChannelIndex, std::shared_ptr<slint::VectorModel<Channel>> channels):
 	m_currentChannelIndex(std::move(currentChannelIndex)),
 	m_channels(std::move(channels))
-{
+{ }
 
+void ServerChannelsController::EvaluateCurrentChannelIndex()
+{
+	for (size_t i = 0; i < this->m_channels->row_count(); i++)
+	{
+		const auto& channel = m_channels->row_data(i);
+
+		if (channel->selected)
+		{
+			*this->m_currentChannelIndex = static_cast<int>(i);
+			
+			break;
+		}
+	}
 }
 
 void ServerChannelsController::ChangeChannelTo(size_t channelIndex)
