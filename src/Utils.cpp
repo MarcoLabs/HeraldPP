@@ -1,4 +1,6 @@
 #include "Utils.h"
+#include <algorithm>
+#include <ios>
 #include <string_view>
 
 std::string_view utils::FirstTwo(std::string_view s)
@@ -22,4 +24,18 @@ std::string_view utils::FirstTwo(std::string_view s)
 	}
 
 	return s.substr(0, end);
+}
+
+std::string utils::Uppercase(std::string s)
+{
+	std::transform(s.begin(), s.end(), s.begin(), ::toupper);
+	
+	return s;
+}
+
+std::string utils::Lowercase(std::string s)
+{
+	std::transform(s.begin(), s.end(), s.begin(), ::tolower);
+
+	return s;
 }
