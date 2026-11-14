@@ -27,10 +27,15 @@ private:
 	const ServerState& m_serverState;
 	const ServerActions& m_serverActions;
 
+	int m_currentServerId;
+	
 	slint::SharedString m_serverName;
 	int m_currentChannelIndex;
 	std::shared_ptr<slint::VectorModel<Channel>> m_channels;
 	std::shared_ptr<slint::VectorModel<Message>> m_messages;
 
+	// TODO: ServerDataController, which controls the m_serverName and the m_currentServerId
+	
 	ChatController m_chatController;
+	// TODO: ChannelsController, which controls the m_channels and m_currentChannelIndex
 };
