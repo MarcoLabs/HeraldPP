@@ -1,11 +1,11 @@
 import { Button, ScrollView, LineEdit } from "std-widgets.slint";
-import { UserState, ChatState, ChatActions, Message } from "../../globals/Globals.slint";
+import { UserState, Message } from "../../globals/Globals.slint";
 
 export component ScrollableChat
 {
 	callback send-message(string, string);
 
-	in-out property <[Message]> messages <=> ChatState.messages;
+	in-out property <[Message]> messages;
 
 	private property <bool> stick-to-bottom: true;
 	private property <string> user-input-message;
