@@ -5,6 +5,7 @@
 #include "private/slint_string.h"
 #include "ui/pages/Chat/ChatController.h"
 #include "ui/pages/ServerController/ServerChannelsController.h"
+#include "ui/pages/ServerController/ServerChatController.h"
 #include "ui/pages/ServerController/ServerDataController.h"
 #include <memory>
 
@@ -19,7 +20,7 @@ public:
 	ServerController(const ServerController&&) = delete;
 	ServerController& operator=(const ServerController&&) = delete;
 
-	void AttemptSend(const slint::SharedString& author, const slint::SharedString& messageContent);
+	void SendMessage(const slint::SharedString& author, const slint::SharedString& messageContent);
 	void ChangeServerTo(int serverId);
 
 private:
@@ -36,7 +37,7 @@ private:
 	std::shared_ptr<int> m_currentServerId;
 	std::shared_ptr<slint::SharedString> m_serverName;
 
-	ChatController m_chatController;
+	ServerChatController m_serverChatController;
 	
 	ServerChannelsController m_serverChannelsController;
 	ServerDataController m_serverDataController;

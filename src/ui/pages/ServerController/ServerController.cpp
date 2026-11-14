@@ -12,19 +12,14 @@ ServerController::ServerController(const ServerState& serverState, const ServerA
 	m_channels(std::make_shared<slint::VectorModel<Channel>>()),
 	m_currentServerId(std::make_shared<int>(0)),
 	m_serverName(std::make_shared<slint::SharedString>("Server name")),
-	m_chatController(m_messages),
+	m_serverChatController(m_messages),
 	m_serverChannelsController(m_currentChannelIndex, m_channels),
 	m_serverDataController(m_currentServerId, m_serverName)
 {
 	this->m_serverActions.on_send_message([this](const slint::SharedString& author, const slint::SharedString& messageContent)
 	{
-		this->AttemptSend(author, messageContent);
+		this->SendMessage(author, messageContent);
 	});
-
-	// this->m_serverActions.on_channel_changed([this](int channelId)
-	// {
-	// 	this->ChangeServerTo(int serverId)
-	// });
 
 	this->m_serverState.set_channels(this->m_channels);
 	this->m_serverState.set_messages(this->m_messages);
@@ -32,9 +27,9 @@ ServerController::ServerController(const ServerState& serverState, const ServerA
 	this->UpdateUiWithScalarValues();
 }
 
-void ServerController::AttemptSend(const slint::SharedString& author, const slint::SharedString& messageContent)
+void ServerController::SendMessage(const slint::SharedString& author, const slint::SharedString& messageContent)
 {
-	this->m_chatController.Send(author, messageContent);
+	this->m_serverChatController.AttemptSendMessage(Message{author, messageContent});
 }
 
 void ServerController::ChangeServerTo(int serverId)
