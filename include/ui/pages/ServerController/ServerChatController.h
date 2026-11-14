@@ -9,6 +9,8 @@ class ServerChatController
 public:
 	ServerChatController(std::shared_ptr<slint::VectorModel<Message>> messages);
 
+	void SetMessages(std::shared_ptr<slint::VectorModel<Message>> messages);
+	
 	void AttemptSendMessage(const Message& message);
 	
 private:
