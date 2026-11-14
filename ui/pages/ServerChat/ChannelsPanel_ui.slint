@@ -5,6 +5,8 @@ import { Channels } from "components/Channels_ui.slint";
 
 export component ChannelsPanel inherits Rectangle
 {
+	callback channel-changed(int);
+
 	in-out property <[Channel]> channels;
 	in-out property <int> current-channel-index;
 	in property <string> server-name;
@@ -42,6 +44,8 @@ export component ChannelsPanel inherits Rectangle
 					channels[index].selected = true;
 
 					current-channel-index = index;
+
+					root.channel-changed(index);
 				}
 			}
 		}

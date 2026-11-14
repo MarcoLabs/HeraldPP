@@ -1,6 +1,8 @@
 import { ChannelsPanel } from "ServerChat/ChannelsPanel_ui.slint";
 import { ServerState, ServerActions } from "../globals/Globals.slint";
 import { ScrollableChat } from "components/ScrollableChat_ui.slint";
+import { MembersPanel } from "ServerChat/MembersPanel_ui.slint";
+
 export component ServerChat
 {
 	HorizontalLayout
@@ -8,20 +10,36 @@ export component ServerChat
 		ChannelsPanel
 		{
 			width: 20%;
-		
+
 			channels: ServerState.channels;
 			current-channel-index: ServerState.current-channel-index;
 			server-name: ServerState.server-name;
+
+			channel-changed(index) =>
+			{
+				ServerActions.channel-changed(index);
+			}
 		}
 
-		ScrollableChat
+		Rectangle
 		{
-			messages: ServerState.messages;
-
-			send-message(author, message-content) =>
+			if ServerState.channels.length > 0: ScrollableChat
 			{
-				ServerActions.send-message(author, message-content);
+				messages: ServerState.channels[ServerState.current-channel-index].messages;
+
+				send-message(author, message-content) =>
+				{
+					ServerActions.send-message(author, message-content);
+				}
 			}
+
+		}
+
+		MembersPanel
+		{
+			width: 20%;
+
+			channel-members: ServerState.channels[ServerState.current-channel-index].members;
 		}
 	}
 }
