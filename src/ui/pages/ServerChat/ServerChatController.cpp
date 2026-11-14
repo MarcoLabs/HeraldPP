@@ -35,6 +35,7 @@ void ServerChatController::AttemptSend(const slint::SharedString& author, const 
 void ServerChatController::ChangeServerTo(int serverId)
 {
 	this->m_serverDataController.AttemptServerChange(serverId);
+	this->UpdateUiWithScalarValues();
 }
 
 void ServerChatController::UpdateUiWithScalarValues()
