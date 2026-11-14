@@ -22,3 +22,8 @@ ServerChatController::ServerChatController(const ServerState& serverState, const
 	this->m_serverState.set_channels(this->m_channels);
 	this->m_serverState.set_messages(this->m_messages);
 }
+
+void ServerChatController::AttemptSend(const slint::SharedString& author, const slint::SharedString& messageContent)
+{
+	this->m_chatController.Send(author, messageContent);
+}
