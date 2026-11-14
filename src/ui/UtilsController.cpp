@@ -11,4 +11,14 @@ UtilsController::UtilsController(const slint::ComponentHandle<MainWindow>&mainWi
 	{
 		return slint::SharedString(utils::FirstTwo(std::string_view(s)));
 	});
+
+	utils.on_uppercase([](const slint::SharedString& s)
+	{
+		return slint::SharedString(utils::Uppercase(std::string(s)));
+	});
+
+	utils.on_lowercase([](const slint::SharedString& s)
+	{
+		return slint::SharedString(utils::Lowercase(std::string(s)));
+	});
 }
