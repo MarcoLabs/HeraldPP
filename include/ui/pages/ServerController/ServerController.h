@@ -4,7 +4,6 @@
 #include "private/slint_models.h"
 #include "private/slint_string.h"
 #include "ui/pages/ServerController/ServerChannelsController.h"
-#include "ui/pages/ServerController/ServerChatController.h"
 #include "ui/pages/ServerController/ServerDataController.h"
 #include <memory>
 
@@ -29,15 +28,13 @@ private:
 	const ServerState& m_serverState;
 	const ServerActions& m_serverActions;
 
-	std::shared_ptr<slint::VectorModel<Message>> m_messages;
 
 	std::shared_ptr<int> m_currentChannelIndex;
 	std::shared_ptr<slint::VectorModel<Channel>> m_channels;
+	std::shared_ptr<slint::VectorModel<slint::SharedString>> m_members;
 
 	std::shared_ptr<int> m_currentServerId;
 	std::shared_ptr<slint::SharedString> m_serverName;
-
-	ServerChatController m_serverChatController;
 	
 	ServerChannelsController m_serverChannelsController;
 	ServerDataController m_serverDataController;
