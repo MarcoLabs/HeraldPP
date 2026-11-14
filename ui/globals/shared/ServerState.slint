@@ -1,3 +1,5 @@
+import { Message } from "MessageType.slint";
+
 export struct Channel
 {
 	name: string,
@@ -7,5 +9,12 @@ export struct Channel
 export global ServerState
 {
 	in-out property <string> server-name;
-	in-out property <[Channel]> channels;
+	in-out property <[Channel]> channels: [
+		{ name: "General", selected: true },
+		{ name: "Announcements", selected: false },
+		{ name: "Development", selected: false },
+		{ name: "Support", selected: false },
+		{ name: "Random", selected: false }
+	];
+	in-out property <[Message]> messages;
 }
