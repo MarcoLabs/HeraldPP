@@ -1,4 +1,4 @@
-#include "ui/pages/ServerChat/ServerChannelsController.h"
+#include "ui/pages/ServerController/ServerChannelsController.h"
 
 ServerChannelsController::ServerChannelsController(std::shared_ptr<int> currentChannelIndex, std::shared_ptr<slint::VectorModel<Channel>> channels):
 	m_currentChannelIndex(std::move(currentChannelIndex)),

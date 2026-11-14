@@ -1,4 +1,4 @@
-#include "ui/pages/ServerChat/ServerDataController.h"
+#include "ui/pages/ServerController/ServerDataController.h"
 #include <format>
 
 ServerDataController::ServerDataController(std::shared_ptr<int> currentServerId, std::shared_ptr<slint::SharedString> serverName):

@@ -2,7 +2,7 @@
 
 #include "MainWindow_ui.h"
 #include "private/slint_item_tree.h"
-#include "ui/pages/ServerChat/ServerChatController.h"
+#include "ui/pages/ServerController/ServerController.h"
 #include "ui/states/UserStateController.h"
 
 class MainWindowController
@@ -13,5 +13,5 @@ public:
 private:
 	UserStateController m_userStateController;
 	
-	ServerChatController m_serverChatController;
+	ServerController m_serverController;
 };

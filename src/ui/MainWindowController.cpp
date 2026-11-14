@@ -5,4 +5,4 @@
 
 MainWindowController::MainWindowController(slint::ComponentHandle<MainWindow> window):
 	m_userStateController(window->global<UserState>()),
-	m_serverChatController(window->global<ServerState>(), window->global<ServerActions>()) { }
+	m_serverController(window->global<ServerState>(), window->global<ServerActions>()) { }
