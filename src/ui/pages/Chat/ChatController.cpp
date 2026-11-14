@@ -1,4 +1,4 @@
-#include "ui/pages/components/ChatController.h"
+#include "ui/pages/Chat/ChatController.h"
 
 ChatController::ChatController(std::shared_ptr<slint::VectorModel<Message>> messages): m_messages(std::move(messages)) { }
 
