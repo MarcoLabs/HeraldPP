@@ -4,8 +4,8 @@
 #include "private/slint_models.h"
 #include "private/slint_string.h"
 #include "ui/pages/Chat/ChatController.h"
-#include "ui/pages/ServerChat/ServerChannelsController.h"
-#include "ui/pages/ServerChat/ServerDataController.h"
+#include "ui/pages/ServerController/ServerChannelsController.h"
+#include "ui/pages/ServerController/ServerDataController.h"
 #include <memory>
 
 class ServerChatController

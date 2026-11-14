@@ -1,4 +1,4 @@
-#include "ui/pages/ServerChat/ServerChatController.h"
+#include "ui/pages/ServerController/ServerChatController.h"
 #include "MainWindow_ui.h"
 #include "private/slint_models.h"
 #include "private/slint_string.h"
@@ -20,6 +20,11 @@ ServerChatController::ServerChatController(const ServerState& serverState, const
 	{
 		this->AttemptSend(author, messageContent);
 	});
+
+	// this->m_serverActions.on_channel_changed([this](int channelId)
+	// {
+	// 	this->ChangeServerTo(int serverId)
+	// });
 
 	this->m_serverState.set_channels(this->m_channels);
 	this->m_serverState.set_messages(this->m_messages);
