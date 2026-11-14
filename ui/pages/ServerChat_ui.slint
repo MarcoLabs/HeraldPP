@@ -1,5 +1,6 @@
 import { ChannelsPanel } from "ServerChat/ChannelsPanel_ui.slint";
-import { ServerState } from "../globals/Globals.slint";
+import { ServerState, ServerActions } from "../globals/Globals.slint";
+import { ScrollableChat } from "components/ScrollableChat_ui.slint";
 export component ServerChat
 {
 	HorizontalLayout
@@ -8,13 +9,19 @@ export component ServerChat
 		{
 			width: 20%;
 		
-			server-name: ServerState.server-name;
 			channels: ServerState.channels;
+			current-channel-index: ServerState.current-channel-index;
+			server-name: ServerState.server-name;
 		}
 
-		Text
+		ScrollableChat
 		{
-			text: "ServerChat";
+			messages: ServerState.messages;
+
+			send-message(author, message-content) =>
+			{
+				ServerActions.send-message(author, message-content);
+			}
 		}
 	}
 }
