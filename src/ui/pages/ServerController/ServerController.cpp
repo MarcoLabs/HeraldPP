@@ -1,10 +1,10 @@
-#include "ui/pages/ServerController/ServerChatController.h"
+#include "ui/pages/ServerController/ServerController.h"
 #include "MainWindow_ui.h"
 #include "private/slint_models.h"
 #include "private/slint_string.h"
 #include <memory>
 
-ServerChatController::ServerChatController(const ServerState& serverState, const ServerActions& serverActions):
+ServerController::ServerController(const ServerState& serverState, const ServerActions& serverActions):
 	m_serverState(serverState),
 	m_serverActions(serverActions),
 	m_messages(std::make_shared<slint::VectorModel<Message>>()),
@@ -32,18 +32,18 @@ ServerChatController::ServerChatController(const ServerState& serverState, const
 	this->UpdateUiWithScalarValues();
 }
 
-void ServerChatController::AttemptSend(const slint::SharedString& author, const slint::SharedString& messageContent)
+void ServerController::AttemptSend(const slint::SharedString& author, const slint::SharedString& messageContent)
 {
 	this->m_chatController.Send(author, messageContent);
 }
 
-void ServerChatController::ChangeServerTo(int serverId)
+void ServerController::ChangeServerTo(int serverId)
 {
 	this->m_serverDataController.AttemptServerChange(serverId);
 	this->UpdateUiWithScalarValues();
 }
 
-void ServerChatController::UpdateUiWithScalarValues()
+void ServerController::UpdateUiWithScalarValues()
 {
 	this->m_serverState.set_server_name(*this->m_serverName);
 	this->m_serverState.set_current_channel_index(*this->m_currentChannelIndex);

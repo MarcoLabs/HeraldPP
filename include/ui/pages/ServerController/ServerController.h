@@ -8,16 +8,16 @@
 #include "ui/pages/ServerController/ServerDataController.h"
 #include <memory>
 
-class ServerChatController
+class ServerController
 {
 public:
-	ServerChatController(const ServerState& serverState, const ServerActions& serverActions);
+	ServerController(const ServerState& serverState, const ServerActions& serverActions);
 
-	ServerChatController(const ServerChatController&) = delete;
-	ServerChatController& operator=(const ServerChatController&) = delete;
+	ServerController(const ServerController&) = delete;
+	ServerController& operator=(const ServerController&) = delete;
 
-	ServerChatController(const ServerChatController&&) = delete;
-	ServerChatController& operator=(const ServerChatController&&) = delete;
+	ServerController(const ServerController&&) = delete;
+	ServerController& operator=(const ServerController&&) = delete;
 
 	void AttemptSend(const slint::SharedString& author, const slint::SharedString& messageContent);
 	void ChangeServerTo(int serverId);
