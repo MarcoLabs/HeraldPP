@@ -7,7 +7,8 @@
 ServerChatController::ServerChatController(const ServerState& serverState, const ServerActions& serverActions):
 	m_serverState(serverState),
 	m_serverActions(serverActions),
-	m_serverName(""),
+	m_serverName("Server name"),
+	m_currentChannelIndex(0),
 	m_channels(std::make_shared<slint::VectorModel<Channel>>()),
 	m_messages(std::make_shared<slint::VectorModel<Message>>()),
 	m_chatController(m_messages)
@@ -17,13 +18,19 @@ ServerChatController::ServerChatController(const ServerState& serverState, const
 		this->AttemptSend(author, messageContent);
 	});
 
-	
-	
 	this->m_serverState.set_channels(this->m_channels);
 	this->m_serverState.set_messages(this->m_messages);
+
+	this->UpdateUiWithScalarValues();
 }
 
 void ServerChatController::AttemptSend(const slint::SharedString& author, const slint::SharedString& messageContent)
 {
 	this->m_chatController.Send(author, messageContent);
+}
+
+void ServerChatController::UpdateUiWithScalarValues()
+{
+	this->m_serverState.set_server_name(this->m_serverName);
+	this->m_serverState.set_current_channel_index(this->m_currentChannelIndex);
 }
