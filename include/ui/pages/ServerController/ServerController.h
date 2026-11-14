@@ -3,7 +3,6 @@
 #include "MainWindow_ui.h"
 #include "private/slint_models.h"
 #include "private/slint_string.h"
-#include "ui/pages/Chat/ChatController.h"
 #include "ui/pages/ServerController/ServerChannelsController.h"
 #include "ui/pages/ServerController/ServerChatController.h"
 #include "ui/pages/ServerController/ServerDataController.h"
@@ -22,6 +21,7 @@ public:
 
 	void SendMessage(const slint::SharedString& author, const slint::SharedString& messageContent);
 	void ChangeServerTo(int serverId);
+	void ChangeChannelTo(int channelIndex);
 
 private:
 	void UpdateUiWithScalarValues();

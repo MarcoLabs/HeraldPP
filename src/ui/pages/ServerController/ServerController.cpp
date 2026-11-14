@@ -21,6 +21,11 @@ ServerController::ServerController(const ServerState& serverState, const ServerA
 		this->SendMessage(author, messageContent);
 	});
 
+	this->m_serverActions.on_channel_changed([this](int channelIndex)
+	{
+		this->ChangeChannelTo(channelIndex);
+	});
+
 	this->m_serverState.set_channels(this->m_channels);
 	this->m_serverState.set_messages(this->m_messages);
 
@@ -36,6 +41,11 @@ void ServerController::ChangeServerTo(int serverId)
 {
 	this->m_serverDataController.AttemptServerChange(serverId);
 	this->UpdateUiWithScalarValues();
+}
+
+void ServerController::ChangeChannelTo(int channelIndex)
+{
+	this->m_serverChannelsController.ChangeChannelTo(channelIndex);
 }
 
 void ServerController::UpdateUiWithScalarValues()
