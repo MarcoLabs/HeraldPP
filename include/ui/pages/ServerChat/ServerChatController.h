@@ -18,11 +18,10 @@ public:
 	ServerChatController& operator=(const ServerChatController&&) = delete;
 
 	void AttemptSend(const slint::SharedString& author, const slint::SharedString& messageContent);
+	void ChangeServerTo(int serverId);
 
 private:
 	void UpdateUiWithScalarValues();
-
-
 
 	const ServerState& m_serverState;
 	const ServerActions& m_serverActions;
@@ -35,7 +34,6 @@ private:
 	std::shared_ptr<slint::VectorModel<Message>> m_messages;
 
 	// TODO: ServerDataController, which controls the m_serverName and the m_currentServerId
-	
 	ChatController m_chatController;
 	// TODO: ChannelsController, which controls the m_channels and m_currentChannelIndex
 };
