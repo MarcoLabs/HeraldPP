@@ -2,6 +2,8 @@ import { AppTheme } from "../globals/Style.slint";
 
 export component ColorableLineEdit
 {
+	callback accepted;
+	
 	in-out property <string> text <=> input.text;
 	in property <string> placeholder-text;
 	in property <color> background: AppTheme.current-theme.surface;
@@ -30,6 +32,11 @@ export component ColorableLineEdit
 			width: parent.width - 16px;
 			color: root.text-color;
 			vertical-alignment: center;
+
+			accepted =>
+			{
+				root.accepted();
+			}
 		}
 	}
 }

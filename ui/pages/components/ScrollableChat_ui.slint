@@ -1,7 +1,61 @@
 import { Button, ScrollView, LineEdit } from "std-widgets.slint";
 import { UserState, Message } from "../../globals/Globals.slint";
+import { AppTheme } from "../../globals/Style.slint";
+import { ColorableLineEdit } from "../../components/ColorableLineEdit.slint";
+import { ColorableButton } from "../../components/ColorableButton.slint";
 
-export component ScrollableChat
+component ChatInput inherits Rectangle
+{
+	callback send-message(string, string);
+
+	private property <string> user-input-message;
+
+	HorizontalLayout
+	{
+		padding: 10px;
+
+		ColorableLineEdit
+		{
+			width: 85%;
+			
+			placeholder-text: "Enter message here";
+			text <=> user-input-message;
+
+			accepted =>
+			{
+				if (user-input-message.is-empty)
+				{
+					return;
+				}
+	
+				root.send-message(UserState.username, user-input-message);
+	
+				user-input-message = "";
+			}
+		}
+
+		ColorableButton
+		{
+			width: 15%;
+			
+			text: "➤";
+
+			clicked =>
+			{
+				if (user-input-message.is-empty)
+				{
+					return;
+				}
+
+				root.send-message(UserState.username, user-input-message);
+
+				user-input-message = "";
+			}
+		}
+	}
+}
+
+export component ScrollableChat inherits Rectangle
 {
 	callback send-message(string, string);
 
@@ -9,6 +63,8 @@ export component ScrollableChat
 
 	private property <bool> stick-to-bottom: true;
 	private property <string> user-input-message;
+
+	background: AppTheme.current-theme.bg-primary;
 
 	VerticalLayout
 	{
@@ -38,47 +94,17 @@ export component ScrollableChat
 				width: parent.width;
 				height: 20px;
 				text: message.author + ":" + message.content;
+				color: AppTheme.current-theme.text-primary;
 			}
 		}
 
-		HorizontalLayout
+		ChatInput
 		{
 			height: 10%;
-			padding: 10px;
-
-			LineEdit
+			
+			send-message(author, message-content) =>
 			{
-				placeholder-text: "Enter message here";
-				text <=> user-input-message;
-
-				accepted =>
-				{
-					if (user-input-message.is-empty)
-					{
-						return;
-					}
-
-					root.send-message(UserState.username, user-input-message);
-
-					user-input-message = "";
-				}
-			}
-
-			Button
-			{
-				text: "➤";
-
-				clicked =>
-				{
-					if (user-input-message.is-empty)
-					{
-						return;
-					}
-
-					root.send-message(UserState.username, user-input-message);
-
-					user-input-message = "";
-				}
+				root.send-message(author, message-content);
 			}
 		}
 	}
