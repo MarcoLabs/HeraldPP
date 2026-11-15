@@ -17,7 +17,7 @@ component ChatInput inherits Rectangle
 		ColorableLineEdit
 		{
 			width: 85%;
-			
+
 			placeholder-text: "Enter message here";
 			text <=> user-input-message;
 
@@ -27,9 +27,9 @@ component ChatInput inherits Rectangle
 				{
 					return;
 				}
-	
+
 				root.send-message(UserState.username, user-input-message);
-	
+
 				user-input-message = "";
 			}
 		}
@@ -37,7 +37,7 @@ component ChatInput inherits Rectangle
 		ColorableButton
 		{
 			width: 15%;
-			
+
 			text: "➤";
 
 			clicked =>
@@ -101,7 +101,7 @@ export component ScrollableChat inherits Rectangle
 		ChatInput
 		{
 			height: 10%;
-			
+
 			send-message(author, message-content) =>
 			{
 				root.send-message(author, message-content);
