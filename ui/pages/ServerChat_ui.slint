@@ -2,6 +2,7 @@ import { ChannelsPanel } from "ServerChat/ChannelsPanel_ui.slint";
 import { ServerState, ServerActions } from "../globals/Globals.slint";
 import { ScrollableChat } from "components/ScrollableChat_ui.slint";
 import { MembersPanel } from "ServerChat/MembersPanel_ui.slint";
+import { SidePanel, ButtonSide, MinimizeDirection } from "ServerChat/components/SidePanel_ui.slint";
 
 export component ServerChat
 {
@@ -34,11 +35,19 @@ export component ServerChat
 			}
 		}
 
-		MembersPanel
+		SidePanel
 		{
-			width: 20%;
+			icon: @image-url("../icons/collapse.png");
+			button-side: ButtonSide.left;
+			minimize-direction: MinimizeDirection.right;
+			reference-width: parent.width;
+			expanded-percent: 20%;
+			flip-icon: true;
 
-			channel-members: ServerState.channels[ServerState.current-channel-index].members;
+			MembersPanel
+			{
+				channel-members: ServerState.channels[ServerState.current-channel-index].members;
+			}
 		}
 	}
 }
