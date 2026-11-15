@@ -16,9 +16,10 @@ export component SidePanel inherits Rectangle
 	in-out property <bool> is-minimized: false;
 
 	private property <length> expanded-width: reference-width * expanded-percent;
+	private property <length> minimized-width: reference-width * minimized-percent;
 
 	background: AppTheme.current-theme.bg-primary;
-	width: button-size + (is-minimized ? 0px : expanded-width);
+	width: button-size + (is-minimized ? minimized-width : expanded-width);
 	clip: true;
 
 	animate width { duration: 200ms; easing: ease-in-out; }
