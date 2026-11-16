@@ -1,104 +1,8 @@
 import { AppTheme } from "../../globals/Style.slint";
 import { PanelItem } from "components/PanelItem_ui.slint";
 import { Channel } from "../../globals/shared/ServerState.slint";
-import { FullSizeChannels } from "components/FullSizeChannels_ui.slint";
 import { Utils } from "../../globals/Globals.slint";
-import { MinimizedChannels } from "components/MinimizedChannels_ui.slint";
-
-component FullSizeChannelsPanel inherits Rectangle
-{
-	callback channel-changed(int);
-	
-	in property <string> server-name;
-	in-out property <[Channel]> channels;
-	in-out property <int> current-channel-index;
-
-	VerticalLayout
-	{
-		alignment: start;
-
-		PanelItem
-		{
-			height: 10%;
-
-			Text
-			{
-				text: server-name;
-				color: AppTheme.current-theme.text-primary;
-				font-weight: 700;
-			}
-		}
-
-		PanelItem
-		{
-			height: 90%;
-
-			FullSizeChannels
-			{
-				channels: channels;
-
-				channel-changed(index) =>
-				{
-					channels[current-channel-index].selected = false;
-					channels[index].selected = true;
-
-					current-channel-index = index;
-
-					root.channel-changed(index);
-				}
-			}
-		}
-	}
-}
-
-component MinimizedChannelsPanel inherits Rectangle
-{
-	callback channel-changed(int);
-	
-	in property <string> server-name;
-	in-out property <[Channel]> channels;
-	in-out property <int> current-channel-index;
-
-	VerticalLayout
-	{
-		alignment: start;
-
-		PanelItem
-		{
-			height: 10%;
-
-			Text
-			{
-				x: 8px;
-				width: parent.width - 16px;
-				horizontal-alignment: left;
-				text: Utils.uppercase(Utils.first-two(server-name));
-				color: AppTheme.current-theme.text-primary;
-				font-weight: 700;
-			}
-		}
-
-		PanelItem
-		{
-			height: 90%;
-
-			MinimizedChannels
-			{
-				channels: channels;
-
-				channel-changed(index) =>
-				{
-					channels[current-channel-index].selected = false;
-					channels[index].selected = true;
-
-					current-channel-index = index;
-
-					root.channel-changed(index);
-				}
-			}
-		}
-	}
-}
+import { Channels } from "components/Channels_ui.slint";
 
 export component ChannelsPanel inherits Rectangle
 {
@@ -113,27 +17,46 @@ export component ChannelsPanel inherits Rectangle
 	border-color: AppTheme.current-theme.border;
 	background: AppTheme.current-theme.panel;
 
-	if (is-minimized) : MinimizedChannelsPanel
+	VerticalLayout
 	{
-		server-name: root.server-name;
-		channels <=> root.channels;
-		current-channel-index <=> root.current-channel-index;
+		alignment: start;
 
-		channel-changed(index) =>
+		PanelItem
 		{
-			root.channel-changed(index);
+			height: 10%;
+
+			Text
+			{
+				x: 0px;
+				width: is-minimized ? parent.width / 5 : parent.width;
+				horizontal-alignment: center;
+				text: is-minimized ? Utils.uppercase(Utils.first-two(server-name)) : server-name;
+				color: AppTheme.current-theme.text-primary;
+				font-weight: 700;
+			}
 		}
-	}
 
-	if (! is-minimized) : FullSizeChannelsPanel
-	{
-		server-name: root.server-name;
-		channels <=> root.channels;
-		current-channel-index <=> root.current-channel-index;
-
-		channel-changed(index) =>
+		PanelItem
 		{
-			root.channel-changed(index);
+			height: 90%;
+
+			Channels
+			{
+				channels: channels;
+				is-minimized: is-minimized;
+
+				height: 90%;
+
+				channel-changed(index) =>
+				{
+					channels[current-channel-index].selected = false;
+					channels[index].selected = true;
+
+					current-channel-index = index;
+
+					root.channel-changed(index);
+				}
+			}
 		}
 	}
 }
