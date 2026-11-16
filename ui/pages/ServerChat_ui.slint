@@ -8,17 +8,27 @@ export component ServerChat
 {
 	HorizontalLayout
 	{
-		ChannelsPanel
+		SidePanel
 		{
-			width: 20%;
+			icon: @image-url("../icons/collapse.png");
+			button-side: ButtonSide.right;
+			minimize-direction: MinimizeDirection.left;
+			reference-width: parent.width;
+			expanded-percent: 20%;
+			minimized-percent: 5%;
+			flip-icon: true;
 
-			channels: ServerState.channels;
-			current-channel-index: ServerState.current-channel-index;
-			server-name: ServerState.server-name;
-
-			channel-changed(index) =>
+			ChannelsPanel
 			{
-				ServerActions.channel-changed(index);
+				channels: ServerState.channels;
+				current-channel-index: ServerState.current-channel-index;
+				server-name: ServerState.server-name;
+				is-minimized: parent.is-minimized;
+
+				channel-changed(index) =>
+				{
+					ServerActions.channel-changed(index);
+				}
 			}
 		}
 
