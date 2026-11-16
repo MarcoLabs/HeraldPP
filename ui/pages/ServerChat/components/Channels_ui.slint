@@ -1,11 +1,13 @@
 import { Channel } from "../../../globals/shared/ServerState.slint";
 import { AppTheme } from "../../../globals/Style.slint";
+import { Utils } from "../../../globals/shared/Utils.slint";
 
 component ChannelItem inherits Rectangle
 {
 	callback clicked;
-
+	
 	in property <Channel> channel;
+	in property <bool> is-minimized;
 
 	background: channel.selected ? AppTheme.current-theme.accent : AppTheme.current-theme.panel;
 	border-radius: 5px;
@@ -17,16 +19,16 @@ component ChannelItem inherits Rectangle
 	{
 		alignment: center;
 		padding: 5px;
-		
+
 		Text
 		{
-			text: "# " + channel.name;
+			text: "# " + (is-minimized ? Utils.first-two(channel.name) : channel.name);
 			color: channel.selected ? AppTheme.current-theme.text-primary : AppTheme.current-theme.text-muted;
-			
+
 			animate color { duration: 100ms; easing: ease-in; }
 		}
 	}
-
+	
 	TouchArea
 	{
 		clicked =>
@@ -36,30 +38,36 @@ component ChannelItem inherits Rectangle
 	}
 }
 
-export component FullSizeChannels inherits Rectangle
+export component Channels inherits Rectangle
 {
 	callback channel-changed(int);
-
+	
 	in property <[Channel]> channels;
+	in property <bool> is-minimized;
 
 	VerticalLayout
 	{
 		padding: 10px;
 		alignment: start;
-		
+
 		Text
 		{
-			text: "Channels";
+			x: 0px;
+			width: is-minimized ? root.width / 5 : root.width;
+			text: is-minimized ? "Chn" : "Channels";
+			horizontal-alignment: center;
+			vertical-alignment: top;
 			color: AppTheme.current-theme.text-muted;
 		}
 
 		VerticalLayout
 		{
 			alignment: center;
-		
+
 			for channel[i] in channels : ChannelItem
 			{
 				channel: channel;
+				is-minimized: root.is-minimized;
 
 				clicked =>
 				{
