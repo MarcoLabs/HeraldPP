@@ -1,5 +1,4 @@
 import { AppTheme } from "../../globals/Style.slint";
-import { PanelItem } from "components/PanelItem_ui.slint";
 import { Channel } from "../../globals/shared/ServerState.slint";
 import { Utils } from "../../globals/Globals.slint";
 import { Channels } from "components/Channels_ui.slint";
@@ -16,46 +15,71 @@ export component ChannelsPanel inherits Rectangle
 	border-width: 1px;
 	border-color: AppTheme.current-theme.border;
 	background: AppTheme.current-theme.panel;
+	clip: true;
 
 	VerticalLayout
 	{
-		alignment: start;
-
-		PanelItem
+		Rectangle
 		{
-			height: 10%;
+			height: 56px;
 
-			Text
+			if is-minimized : Rectangle
 			{
-				x: 0px;
-				width: is-minimized ? parent.width / 5 : parent.width;
-				horizontal-alignment: center;
-				text: is-minimized ? Utils.uppercase(Utils.first-two(server-name)) : server-name;
-				color: AppTheme.current-theme.text-primary;
-				font-weight: 700;
+				x: 4px;
+				width: min(36px, parent.width - 8px);
+				height: self.width;
+				border-radius: 10px;
+				background: AppTheme.current-theme.border.with-alpha(0.6);
+
+				Text
+				{
+					text: Utils.uppercase(Utils.first-two(server-name));
+					color: AppTheme.current-theme.text-primary;
+					font-size: 13px;
+					font-weight: 700;
+					horizontal-alignment: center;
+					vertical-alignment: center;
+				}
+			}
+
+			if !is-minimized : HorizontalLayout
+			{
+				padding-left: 16px;
+				padding-right: 16px;
+
+				Text
+				{
+					text: server-name;
+					color: AppTheme.current-theme.text-primary;
+					font-size: 15px;
+					font-weight: 700;
+					vertical-alignment: center;
+					overflow: elide;
+				}
+			}
+
+			Rectangle
+			{
+				y: parent.height - self.height;
+				height: 1px;
+				background: AppTheme.current-theme.border;
 			}
 		}
 
-		PanelItem
+		Channels
 		{
-			height: 90%;
+			vertical-stretch: 1;
+			channels: channels;
+			is-minimized: is-minimized;
 
-			Channels
+			channel-changed(index) =>
 			{
-				channels: channels;
-				is-minimized: is-minimized;
+				channels[current-channel-index].selected = false;
+				channels[index].selected = true;
 
-				height: 90%;
+				current-channel-index = index;
 
-				channel-changed(index) =>
-				{
-					channels[current-channel-index].selected = false;
-					channels[index].selected = true;
-
-					current-channel-index = index;
-
-					root.channel-changed(index);
-				}
+				root.channel-changed(index);
 			}
 		}
 	}

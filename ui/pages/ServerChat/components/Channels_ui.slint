@@ -5,32 +5,69 @@ import { Utils } from "../../../globals/shared/Utils.slint";
 component ChannelItem inherits Rectangle
 {
 	callback clicked;
-	
+
 	in property <Channel> channel;
 	in property <bool> is-minimized;
 
-	background: channel.selected ? AppTheme.current-theme.accent : AppTheme.current-theme.panel;
-	border-radius: 5px;
-	height: 25px;
+	background: channel.selected ? AppTheme.current-theme.accent : touch.has-hover ? AppTheme.current-theme.border.with-alpha(0.5) : transparent;
+	border-radius: 8px;
+	height: 32px;
 
-	animate background { duration: 100ms; easing: ease-in; }
+	animate background { duration: 120ms; easing: ease-out; }
 
-	VerticalLayout
+	if is-minimized : HorizontalLayout
 	{
-		alignment: center;
-		padding: 5px;
+		padding-left: 10px;
+		padding-right: 4px;
+	
+		Text
+		{
+			text: Utils.first-two(channel.name);
+			horizontal-alignment: left;
+			vertical-alignment: center;
+			overflow: clip;
+			font-size: 13px;
+			font-weight: channel.selected ? 700 : 500;
+			color: channel.selected || touch.has-hover ? AppTheme.current-theme.text-primary : AppTheme.current-theme.text-muted;
+	
+			animate color { duration: 120ms; easing: ease-out; }
+		}
+	}
+
+	if !is-minimized : HorizontalLayout
+	{
+		padding-left: 10px;
+		padding-right: 10px;
+		spacing: 8px;
 
 		Text
 		{
-			text: "# " + (is-minimized ? Utils.first-two(channel.name) : channel.name);
-			color: channel.selected ? AppTheme.current-theme.text-primary : AppTheme.current-theme.text-muted;
+			text: "#";
+			vertical-alignment: center;
+			font-size: 15px;
+			font-weight: 700;
+			color: channel.selected ? AppTheme.current-theme.text-primary : AppTheme.current-theme.text-muted.with-alpha(0.7);
 
-			animate color { duration: 100ms; easing: ease-in; }
+			animate color { duration: 120ms; easing: ease-out; }
+		}
+
+		Text
+		{
+			text: channel.name;
+			vertical-alignment: center;
+			overflow: elide;
+			font-size: 14px;
+			font-weight: channel.selected ? 650 : 500;
+			color: channel.selected || touch.has-hover ? AppTheme.current-theme.text-primary : AppTheme.current-theme.text-muted;
+
+			animate color { duration: 120ms; easing: ease-out; }
 		}
 	}
-	
-	TouchArea
+
+	touch := TouchArea
 	{
+		mouse-cursor: pointer;
+
 		clicked =>
 		{
 			root.clicked();
@@ -41,38 +78,47 @@ component ChannelItem inherits Rectangle
 export component Channels inherits Rectangle
 {
 	callback channel-changed(int);
-	
+
 	in property <[Channel]> channels;
 	in property <bool> is-minimized;
 
 	VerticalLayout
 	{
-		padding: 10px;
+		padding: 8px;
+		spacing: 2px;
 		alignment: start;
 
-		Text
+		Rectangle
 		{
-			x: 0px;
-			width: is-minimized ? root.width / 5 : root.width;
-			text: is-minimized ? "Chn" : "Channels";
-			horizontal-alignment: center;
-			vertical-alignment: top;
-			color: AppTheme.current-theme.text-muted;
+			height: 28px;
+
+			if is-minimized : Rectangle
+			{
+				y: parent.height / 2;
+				height: 1px;
+				background: AppTheme.current-theme.border;
+			}
+
+			if !is-minimized : Text
+			{
+				x: 8px;
+				text: "CHANNELS";
+				vertical-alignment: center;
+				font-size: 11px;
+				font-weight: 700;
+				letter-spacing: 1px;
+				color: AppTheme.current-theme.text-muted;
+			}
 		}
 
-		VerticalLayout
+		for channel[i] in channels : ChannelItem
 		{
-			alignment: center;
+			channel: channel;
+			is-minimized: root.is-minimized;
 
-			for channel[i] in channels : ChannelItem
+			clicked =>
 			{
-				channel: channel;
-				is-minimized: root.is-minimized;
-
-				clicked =>
-				{
-					root.channel-changed(i);
-				}
+				root.channel-changed(i);
 			}
 		}
 	}

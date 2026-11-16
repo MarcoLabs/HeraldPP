@@ -12,6 +12,7 @@ export component SidePanel inherits Rectangle
 	in property <percent> expanded-percent: 20%;
 	in property <percent> minimized-percent: 0%;
 	in property <length> button-size: 24px;
+	in property <length> button-padding: 4px;
 	in property <bool> flip-icon: false;
 	in-out property <bool> is-minimized: false;
 
@@ -24,29 +25,10 @@ export component SidePanel inherits Rectangle
 
 	animate width { duration: 200ms; easing: ease-in-out; }
 
-	Image
-	{
-		x: root.button-side == ButtonSide.left ? 0px : root.width - self.width;
-		y: 4px;
-		width: root.button-size;
-		height: root.button-size;
-		source: root.icon;
-		colorize: AppTheme.current-theme.text-primary;
-		transform-rotation: ((root.is-minimized != (root.minimize-direction == MinimizeDirection.left)) != root.flip-icon) ? 180deg : 0deg;
-
-		TouchArea
-		{
-			clicked =>
-			{
-				root.is-minimized = !root.is-minimized;
-			}
-		}
-	}
-
 	Rectangle
 	{
 		x: root.button-side == ButtonSide.left ? root.button-size : 0px;
-		width: root.width - root.button-size;
+		width: max(0px, root.width - root.button-size);
 		clip: true;
 
 		Rectangle
@@ -57,6 +39,39 @@ export component SidePanel inherits Rectangle
 			border-color: AppTheme.current-theme.border;
 
 			@children
+		}
+	}
+
+	Rectangle
+	{
+		x: root.button-side == ButtonSide.left ? 0px : root.width - self.width;
+		y: 4px;
+		width: root.button-size;
+		height: root.button-size;
+		background: touch-area.has-hover ? AppTheme.current-theme.border : AppTheme.current-theme.bg-primary;
+		border-width: 1px;
+		border-color: AppTheme.current-theme.border;
+		border-radius: 5px;
+
+		animate background { duration: 100ms; easing: ease-in; }
+
+		Image
+		{
+			x: root.button-padding;
+			y: root.button-padding;
+			width: max(0px, parent.width - root.button-padding * 2);
+			height: max(0px, parent.height - root.button-padding * 2);
+			source: root.icon;
+			colorize: AppTheme.current-theme.text-primary;
+			transform-rotation: ((root.is-minimized != (root.minimize-direction == MinimizeDirection.left)) != root.flip-icon) ? 180deg : 0deg;
+		}
+
+		touch-area := TouchArea
+		{
+			clicked =>
+			{
+				root.is-minimized = !root.is-minimized;
+			}
 		}
 	}
 }
