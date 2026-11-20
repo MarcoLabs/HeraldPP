@@ -11,7 +11,7 @@ ServerController::ServerController(const ServerState& serverState, const ServerA
 	m_channels(std::make_shared<slint::VectorModel<Channel>>()),
 	m_currentServerId(std::make_shared<int>(0)),
 	m_serverName(std::make_shared<slint::SharedString>("Server name")),
-	m_serverChannelsController(m_currentChannelIndex, m_channels, m_members),
+	m_serverChannelsController(m_currentChannelIndex, m_channels),
 	m_serverDataController(m_currentServerId, m_serverName)
 {
 	m_channels->push_back(Channel{"channel a", true, std::make_shared<slint::VectorModel<slint::SharedString>>(std::vector<slint::SharedString>{ "alice", "bob", "charlie" }), std::make_shared<slint::VectorModel<Message>>()});

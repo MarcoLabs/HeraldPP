@@ -31,7 +31,6 @@ private:
 
 	std::shared_ptr<int> m_currentChannelIndex;
 	std::shared_ptr<slint::VectorModel<Channel>> m_channels;
-	std::shared_ptr<slint::VectorModel<slint::SharedString>> m_members;
 
 	std::shared_ptr<int> m_currentServerId;
 	std::shared_ptr<slint::SharedString> m_serverName;
