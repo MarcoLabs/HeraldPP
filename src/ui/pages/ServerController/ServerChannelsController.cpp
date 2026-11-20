@@ -1,13 +1,11 @@
 #include "ui/pages/ServerController/ServerChannelsController.h"
 #include "MainWindow_ui.h"
 #include "private/slint_models.h"
-#include "private/slint_string.h"
 #include <memory>
 
-ServerChannelsController::ServerChannelsController(std::shared_ptr<int> currentChannelIndex, std::shared_ptr<slint::VectorModel<Channel>> channels, std::shared_ptr<slint::VectorModel<slint::SharedString>> members):
+ServerChannelsController::ServerChannelsController(std::shared_ptr<int> currentChannelIndex, std::shared_ptr<slint::VectorModel<Channel>> channels):
 	m_currentChannelIndex(std::move(currentChannelIndex)),
 	m_channels(std::move(channels)),
-	m_members(std::move(members)),
 	m_serverChatController(nullptr)
 { }
 
