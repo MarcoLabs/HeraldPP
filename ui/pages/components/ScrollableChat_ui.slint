@@ -1,8 +1,104 @@
-import { Button, ScrollView, LineEdit } from "std-widgets.slint";
+import { ScrollView } from "std-widgets.slint";
 import { UserState, Message } from "../../globals/Globals.slint";
 import { AppTheme } from "../../globals/Style.slint";
-import { ColorableLineEdit } from "../../components/ColorableLineEdit.slint";
 import { ColorableButton } from "../../components/ColorableButton.slint";
+
+component GrowingTextInput inherits Rectangle
+{
+	callback accepted();
+
+	in property <string> placeholder-text;
+	in property <length> max-input-height: 120px;
+	in-out property <string> text <=> field.text;
+
+	private property <bool> stick-to-bottom: true;
+	private property <length> wanted-height: max(32px, min(root.max-input-height, field.preferred-height + 12px));
+
+	min-height: root.wanted-height;
+	preferred-height: root.wanted-height;
+	max-height: root.wanted-height;
+	border-width: 1px;
+	border-radius: 4px;
+	border-color: AppTheme.current-theme.text-primary.with-alpha(0.4);
+	background: AppTheme.current-theme.bg-primary;
+	clip: true;
+
+	function pin-to-bottom()
+	{
+		if (field.text.is-empty)
+		{
+			root.stick-to-bottom = true;
+		}
+
+		if (root.stick-to-bottom)
+		{
+			scroller.content-y = min(0px, scroller.height - scroller.content-height);
+		}
+	}
+
+	FocusScope
+	{
+		capture-key-pressed(event) =>
+		{
+			if (event.text == Key.Return && ! event.modifiers.shift)
+			{
+				root.accepted();
+
+				return accept;
+			}
+
+			return reject;
+		}
+
+		scroller := Flickable
+		{
+			x: 6px;
+			y: 6px;
+			width: parent.width - 12px;
+			height: parent.height - 12px;
+			content-height: field.height;
+
+			flicked =>
+			{
+				root.stick-to-bottom = self.content-y <= self.height - self.content-height + 10px;
+			}
+
+			changed viewport-height =>
+			{
+				root.pin-to-bottom();
+			}
+
+			changed height =>
+			{
+				root.pin-to-bottom();
+			}
+
+			field := TextInput
+			{
+				width: parent.width;
+				height: max(self.preferred-height, parent.height);
+				wrap: word-wrap;
+				single-line: false;
+				color: AppTheme.current-theme.text-primary;
+
+				edited =>
+				{
+					root.stick-to-bottom = true;
+					root.pin-to-bottom();
+				}
+			}
+		}
+
+		Text
+		{
+			x: 6px;
+			y: 6px;
+			visible: field.text.is-empty;
+			text: root.placeholder-text;
+			color: AppTheme.current-theme.text-primary.with-alpha(0.5);
+		}
+	}
+}
 
 component ChatInput inherits Rectangle
 {
@@ -10,11 +106,23 @@ component ChatInput inherits Rectangle
 
 	private property <string> user-input-message;
 
+	function submit()
+	{
+		if (user-input-message.is-empty)
+		{
+			return;
+		}
+
+		root.send-message(UserState.username, user-input-message);
+
+		user-input-message = "";
+	}
+
 	HorizontalLayout
 	{
 		padding: 10px;
 
-		ColorableLineEdit
+		GrowingTextInput
 		{
 			width: 85%;
 
@@ -23,33 +131,25 @@ component ChatInput inherits Rectangle
 
 			accepted =>
 			{
-				if (user-input-message.is-empty)
-				{
-					return;
-				}
-
-				root.send-message(UserState.username, user-input-message);
-
-				user-input-message = "";
+				root.submit();
 			}
 		}
 
-		ColorableButton
+		VerticalLayout
 		{
 			width: 15%;
+			alignment: end;
 
-			text: "➤";
-
-			clicked =>
+			ColorableButton
 			{
-				if (user-input-message.is-empty)
+				height: 32px;
+
+				text: "➤";
+
+				clicked =>
 				{
-					return;
+					root.submit();
 				}
-
-				root.send-message(UserState.username, user-input-message);
-
-				user-input-message = "";
 			}
 		}
 	}
@@ -62,18 +162,25 @@ export component ScrollableChat inherits Rectangle
 	in-out property <[Message]> messages;
 
 	private property <bool> stick-to-bottom: true;
-	private property <string> user-input-message;
 
 	background: AppTheme.current-theme.bg-primary;
+
+	function pin-to-bottom()
+	{
+		if (root.stick-to-bottom)
+		{
+			chat-scroll.content-y = min(0px, chat-scroll.visible-height - chat-scroll.content-height);
+		}
+	}
 
 	VerticalLayout
 	{
 		padding: 15px;
 
-		ScrollView
+		chat-scroll := ScrollView
 		{
-			height: 90%;
-			content-height: messages.length * 25px;
+			vertical-stretch: 1;
+			content-width: self.visible-width;
 
 			scrolled =>
 			{
@@ -82,31 +189,35 @@ export component ScrollableChat inherits Rectangle
 
 			changed content-height =>
 			{
-				if (root.stick-to-bottom)
-				{
-					self.content-y = min(0px, self.visible-height - self.content-height);
-				}
+				root.pin-to-bottom();
 			}
 
-			for message[i] in messages : Text
+			changed visible-height =>
 			{
-				y: i * 25px;
-				width: parent.width;
-				height: 20px;
-				text: message.author + ":" + message.content;
-				color: AppTheme.current-theme.text-primary;
+				root.pin-to-bottom();
+			}
+
+			VerticalLayout
+			{
+				alignment: start;
+				spacing: 4px;
+
+				for message in root.messages : Text
+				{
+					wrap: word-wrap;
+					text: message.author + ":" + message.content;
+					color: AppTheme.current-theme.text-primary;
+				}
 			}
 		}
 
 		ChatInput
 		{
-			height: 10%;
-
 			send-message(author, message-content) =>
 			{
+				root.stick-to-bottom = true;
 				root.send-message(author, message-content);
 			}
 		}
 	}
-
 }
