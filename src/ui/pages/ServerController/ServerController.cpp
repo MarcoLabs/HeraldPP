@@ -14,6 +14,7 @@ ServerController::ServerController(const ServerState& serverState, const ServerA
 	m_serverChannelsController(m_currentChannelIndex, m_channels),
 	m_serverDataController(m_currentServerId, m_serverName)
 {
+	// TODO: Later load from backend
 	LoadSampleData();
 	
 	this->m_serverActions.on_send_message([this](const slint::SharedString& author, const slint::SharedString& messageContent)
