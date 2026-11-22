@@ -10,14 +10,11 @@ ServerController::ServerController(const ServerState& serverState, const ServerA
 	m_currentChannelIndex(std::make_shared<int>(0)),
 	m_channels(std::make_shared<slint::VectorModel<Channel>>()),
 	m_currentServerId(std::make_shared<int>(0)),
-	m_serverName(std::make_shared<slint::SharedString>("Server name")),
+	m_serverName(std::make_shared<slint::SharedString>("")),
 	m_serverChannelsController(m_currentChannelIndex, m_channels),
 	m_serverDataController(m_currentServerId, m_serverName)
 {
-	m_channels->push_back(Channel{"channel a", true, std::make_shared<slint::VectorModel<slint::SharedString>>(std::vector<slint::SharedString>{ "alice", "bob", "charlie" }), std::make_shared<slint::VectorModel<Message>>()});
-	m_channels->push_back(Channel{"channel b", false, std::make_shared<slint::VectorModel<slint::SharedString>>(std::vector<slint::SharedString>{ "Wiktor", "Leon", "peDla" }), std::make_shared<slint::VectorModel<Message>>()});
-
-	this->m_serverChannelsController.BindCurrentChannel();
+	LoadSampleData();
 	
 	this->m_serverActions.on_send_message([this](const slint::SharedString& author, const slint::SharedString& messageContent)
 	{
@@ -56,4 +53,14 @@ void ServerController::UpdateUiWithScalarValues()
 {
 	this->m_serverState.set_server_name(*this->m_serverName);
 	this->m_serverState.set_current_channel_index(*this->m_currentChannelIndex);
+}
+
+void ServerController::LoadSampleData()
+{
+	*this->m_serverName = "Server name";
+
+	m_channels->push_back(Channel{"channel a", true, std::make_shared<slint::VectorModel<slint::SharedString>>(std::vector<slint::SharedString>{ "alice", "bob", "charlie" }), std::make_shared<slint::VectorModel<Message>>()});
+	m_channels->push_back(Channel{"channel b", false, std::make_shared<slint::VectorModel<slint::SharedString>>(std::vector<slint::SharedString>{ "Wiktor", "Leon", "peDla" }), std::make_shared<slint::VectorModel<Message>>()});
+	
+	this->m_serverChannelsController.BindCurrentChannel();
 }

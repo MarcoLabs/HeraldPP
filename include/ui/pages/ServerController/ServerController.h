@@ -25,6 +25,8 @@ public:
 private:
 	void UpdateUiWithScalarValues();
 
+	void LoadSampleData();
+
 	const ServerState& m_serverState;
 	const ServerActions& m_serverActions;
 
