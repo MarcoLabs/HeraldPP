@@ -1,0 +1,79 @@
+import { AppTheme } from "../../../globals/Style.slint";
+
+export enum ButtonSide { left, right }
+export enum MinimizeDirection { left, right }
+
+export component SidePanel inherits Rectangle
+{
+	in property <image> icon;
+	in property <ButtonSide> button-side: ButtonSide.left;
+	in property <MinimizeDirection> minimize-direction: MinimizeDirection.right;
+	in property <length> reference-width: 280px;
+	in property <percent> expanded-percent: 20%;
+	in property <percent> minimized-percent: 0%;
+	in property <length> button-size: 24px;
+	in property <length> button-padding: 4px;
+	in property <bool> flip-icon: false;
+	in-out property <bool> is-minimized: false;
+
+	private property <length> expanded-width: reference-width * expanded-percent;
+	private property <length> minimized-width: reference-width * minimized-percent;
+
+	background: AppTheme.current-theme.bg-primary;
+	width: button-size + (is-minimized ? minimized-width : expanded-width);
+	clip: true;
+
+	animate width { duration: 200ms; easing: ease-in-out; }
+
+	Rectangle
+	{
+		x: root.button-side == ButtonSide.left ? root.button-size : 0px;
+		width: max(0px, root.width - root.button-size);
+		clip: true;
+
+		Rectangle
+		{
+			x: root.minimize-direction == MinimizeDirection.left ? 0px : parent.width - self.width;
+			width: root.expanded-width;
+			border-width: 1px;
+			border-color: AppTheme.current-theme.border;
+
+			@children
+		}
+	}
+
+	Rectangle
+	{
+		x: root.button-side == ButtonSide.left ? 0px : root.width - self.width;
+		y: 4px;
+		width: root.button-size;
+		height: root.button-size;
+		background: touch-area.has-hover ? AppTheme.current-theme.border : AppTheme.current-theme.bg-primary;
+		border-width: 1px;
+		border-color: AppTheme.current-theme.border;
+		border-radius: 5px;
+
+		animate background { duration: 100ms; easing: ease-in; }
+
+		Image
+		{
+			x: root.button-padding;
+			y: root.button-padding;
+			width: max(0px, parent.width - root.button-padding * 2);
+			height: max(0px, parent.height - root.button-padding * 2);
+			source: root.icon;
+			colorize: AppTheme.current-theme.text-primary;
+			transform-rotation: ((root.is-minimized != (root.minimize-direction == MinimizeDirection.left)) != root.flip-icon) ? 180deg : 0deg;
+		}
+
+		touch-area := TouchArea
+		{
+			mouse-cursor: pointer;
+			
+			clicked =>
+			{
+				root.is-minimized = !root.is-minimized;
+			}
+		}
+	}
+}

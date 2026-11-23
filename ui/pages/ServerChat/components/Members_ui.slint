@@ -1,0 +1,58 @@
+import { Utils } from "../../../globals/Globals.slint";
+import { AppTheme } from "../../../globals/Style.slint";
+
+component Member inherits Rectangle
+{
+	in property <string> member;
+
+	height: 25px;
+	
+	HorizontalLayout
+	{
+		Rectangle
+		{
+			width: 20%;
+			background: AppTheme.current-theme.surface;
+			border-radius: self.width/2;
+			border-width: 1px;
+			border-color: AppTheme.current-theme.border;
+	
+			Text
+			{
+				text: Utils.uppercase(Utils.first-two(member));
+				color: AppTheme.current-theme.text-primary;
+				vertical-alignment: center;
+				horizontal-alignment: center;
+			}
+		}
+	
+		Rectangle
+		{
+			width: 2%;
+		}
+	
+		Text
+		{
+			text: member;
+			color: AppTheme.current-theme.text-primary;
+			vertical-alignment: center;
+		}
+	}
+}
+
+export component Members inherits Rectangle
+{
+	in property <[string]> members;
+
+	VerticalLayout
+	{
+		padding: 10px;
+		alignment: start;
+		spacing: 5px;
+		
+		for member in members : Member
+		{
+			member: member;
+		}
+	}
+}

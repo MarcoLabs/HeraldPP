@@ -1,0 +1,16 @@
+import { Message } from "MessageType.slint";
+
+export struct Channel
+{
+	name: string,
+	selected: bool,
+	members: [string],
+	messages: [Message],
+}
+
+export global ServerState
+{
+	in-out property <string> server-name;
+	in-out property <[Channel]> channels;
+	in-out property <int> current-channel-index;
+}

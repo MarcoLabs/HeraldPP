@@ -1,0 +1,86 @@
+import { AppTheme } from "../../globals/Style.slint";
+import { Channel } from "../../globals/shared/ServerState.slint";
+import { Utils } from "../../globals/Globals.slint";
+import { Channels } from "components/Channels_ui.slint";
+
+export component ChannelsPanel inherits Rectangle
+{
+	callback channel-changed(int);
+
+	in-out property <[Channel]> channels;
+	in-out property <int> current-channel-index;
+	in property <string> server-name;
+	in property <bool> is-minimized;
+
+	border-width: 1px;
+	border-color: AppTheme.current-theme.border;
+	background: AppTheme.current-theme.panel;
+	clip: true;
+
+	VerticalLayout
+	{
+		Rectangle
+		{
+			height: 56px;
+
+			if is-minimized : Rectangle
+			{
+				x: 4px;
+				width: min(36px, parent.width - 8px);
+				height: self.width;
+				border-radius: 10px;
+				background: AppTheme.current-theme.border.with-alpha(0.6);
+
+				Text
+				{
+					text: Utils.uppercase(Utils.first-two(server-name));
+					color: AppTheme.current-theme.text-primary;
+					font-size: 13px;
+					font-weight: 700;
+					horizontal-alignment: center;
+					vertical-alignment: center;
+				}
+			}
+
+			if !is-minimized : HorizontalLayout
+			{
+				padding-left: 16px;
+				padding-right: 16px;
+
+				Text
+				{
+					text: server-name;
+					color: AppTheme.current-theme.text-primary;
+					font-size: 15px;
+					font-weight: 700;
+					vertical-alignment: center;
+					overflow: elide;
+				}
+			}
+
+			Rectangle
+			{
+				y: parent.height - self.height;
+				height: 1px;
+				background: AppTheme.current-theme.border;
+			}
+		}
+
+		Channels
+		{
+			vertical-stretch: 1;
+			channels: channels;
+			is-minimized: is-minimized;
+
+			channel-changed(index) =>
+			{
+				channels[current-channel-index].selected = false;
+				channels[index].selected = true;
+
+				current-channel-index = index;
+
+				root.channel-changed(index);
+			}
+		}
+	}
+}

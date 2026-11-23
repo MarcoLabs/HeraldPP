@@ -1,0 +1,37 @@
+import { PanelItem } from "components/PanelItem_ui.slint";
+import { AppTheme } from "../../globals/Style.slint";
+import { Members } from "components/Members_ui.slint";
+
+export component MembersPanel inherits Rectangle
+{
+	in property <[string]> channel-members;
+
+	background: AppTheme.current-theme.panel;
+
+	VerticalLayout
+	{
+		alignment: start;
+
+		PanelItem
+		{
+			height: 10%;
+
+			Text
+			{
+				text: "Members";
+				font-weight: 700;
+				color: AppTheme.current-theme.text-primary;
+			}
+		}
+
+		PanelItem
+		{
+			height: 90%;
+
+			Members
+			{
+				members: channel-members;
+			}
+		}
+	}
+}
