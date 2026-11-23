@@ -32,7 +32,7 @@ component GrowingTextInput inherits Rectangle
 
 		if (root.stick-to-bottom)
 		{
-			scroller.content-y = min(0px, scroller.height - scroller.content-height);
+			scroller.content-y = min(0px, scroller.visible-height - scroller.content-height);
 		}
 	}
 
@@ -50,52 +50,54 @@ component GrowingTextInput inherits Rectangle
 			return reject;
 		}
 
-		scroller := Flickable
+		scroller := ScrollView
 		{
 			x: 6px;
 			y: 6px;
 			width: parent.width - 12px;
 			height: parent.height - 12px;
+			content-width: self.visible-width;
 			content-height: field.height;
-
-			flicked =>
+			horizontal-scrollbar-policy: always-off;
+		
+			scrolled =>
 			{
-				root.stick-to-bottom = self.content-y <= self.height - self.content-height + 10px;
+				root.stick-to-bottom = self.content-y <= self.visible-height - self.content-height + 10px;
 			}
-
-			changed viewport-height =>
-			{
-				root.pin-to-bottom();
-			}
-
-			changed height =>
+		
+			changed content-height =>
 			{
 				root.pin-to-bottom();
 			}
-
+		
+			changed visible-height =>
+			{
+				root.pin-to-bottom();
+			}
+		
 			field := TextInput
 			{
-				width: parent.width;
-				height: max(self.preferred-height, parent.height);
+				width: scroller.visible-width - 12px;
+				height: max(self.preferred-height, scroller.visible-height);
 				wrap: word-wrap;
 				single-line: false;
 				color: AppTheme.current-theme.text-primary;
-
+		
 				edited =>
 				{
 					root.stick-to-bottom = true;
 					root.pin-to-bottom();
 				}
 			}
-		}
-
-		Text
-		{
-			x: 6px;
-			y: 6px;
-			visible: field.text.is-empty;
-			text: root.placeholder-text;
-			color: AppTheme.current-theme.text-primary.with-alpha(0.5);
+		
+			Text
+			{
+				x: 6px;
+				y: 0px;
+				visible: field.text.is-empty;
+				text: root.placeholder-text;
+				color: AppTheme.current-theme.text-primary.with-alpha(0.5);
+			}
 		}
 	}
 }
@@ -201,6 +203,7 @@ export component ScrollableChat inherits Rectangle
 			{
 				alignment: start;
 				spacing: 4px;
+				padding-right: 12px;
 
 				for message in root.messages : Text
 				{
