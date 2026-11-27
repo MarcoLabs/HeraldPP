@@ -1,10 +1,4 @@
-export struct User
-{
-	username: string,
-	user-id: int
-}
-
 export global UserState
 {
-	in-out property <User> current-user;
+	in-out property <string> username: "user";
 }
