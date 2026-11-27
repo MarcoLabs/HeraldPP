@@ -115,7 +115,7 @@ component ChatInput inherits Rectangle
 			return;
 		}
 
-		root.send-message(UserState.current-user.username, user-input-message);
+		root.send-message(UserState.username, user-input-message);
 
 		user-input-message = "";
 	}
